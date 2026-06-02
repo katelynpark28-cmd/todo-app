@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List</title>
+    <style>
+        /* ===== GLOBAL STYLES ===== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Comic Sans MS', 'Comic Sans', cursive;
+        }
+
+        body {
+            background-color: #f5f0e8;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 20px 120px 20px;
+        }
+
+        /* ===== DATE & TIME (top right) ===== */
+        .datetime {
+            position: fixed;
+            top: 20px;
+            right: 30px;
+            text-align: right;
+            color: #7a7068;
+            font-size: 14px;
+        }
+
+        .datetime .time {
+            font-size: 28px;
+            font-weight: bold;
+            color: #4a4340;
+        }
+
+        /* ===== MAIN CONTAINER ===== */
+        .container {
+            width: 100%;
+            max-width: 550px;
+            margin-top: 30px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #4a4340;
+            font-size: 32px;
+            margin-bottom: 30px;
+        }
+
+        /* ===== TASK LIST ===== */
+        .task-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .task-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 16px;
+            background-color: #fffdf8;
+            border-radius: 10px;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .task-item:hover {
+            background-color: #faf6ef;
+        }
+
+        .task-item input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            accent-color: #e8943a;
+            flex-shrink: 0;
+        }
+
+        .task-item .task-text {
+            flex: 1;
+            font-size: 16px;
+            color: #4a4340;
+            word-break: break-word;
+        }
+
+        .task-item .task-text.done {
+            color: #b0a89e;
+        }
+
+        .task-item .task-text.done .strikethrough {
+            position: relative;
+        }
+
+        .task-item .task-text.done .strikethrough::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 50%;
+            height: 2px;
+            background-color: #b0a89e;
+        }
+
+        /* Delete button - hidden until hover */
+        .task-item .delete-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 18px;
+            color: #c9847a;
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 6px;
+            transition: all 0.15s ease;
+        }
+
+        .task-item .delete-btn:hover {
+            background-color: #f0d0cc;
+            color: #a14a3e;
+        }
+
+        .task-item:hover .delete-btn {
+            display: block;
+        }
+
+        /* ===== ADD TASK AREA ===== */
+        .add-task-btn {
+            position: fixed;
+            right: 30px;
+            top: 0;
+            bottom: 0;
+            margin: auto;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: none;
+            background-color: #e8943a;
+            color: white;
+            font-size: 28px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.2s ease, scale 0.2s ease;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+
+        .add-task-btn:hover {
+            background-color: #d4832e;
+        }
+
+        /* Input field that appears when you click + */
+        .add-task-input-area {
+            display: none;
+            margin-top: 16px;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .add-task-input-area.visible {
+            display: flex;
+        }
+
+        .add-task-input-area input {
+            flex: 1;
+            padding: 12px 16px;
+            font-size: 16px;
+            font-family: 'Comic Sans MS', 'Comic Sans', cursive;
+            border: 2px solid #ddd5c8;
+            border-radius: 10px;
+            background-color: #fffdf8;
+            color: #4a4340;
+            outline: none;
+            transition: border-color 0.2s ease;
+        }
+
+        .add-task-input-area input:focus {
+            border-color: #e8943a;
+        }
+
+        .add-task-input-area input::placeholder {
+            color: #c0b8ae;
+        }
+
+        /* ===== BOTTOM BAR (task counter + remarks) ===== */
+        .bottom-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: #ece6db;
+            padding: 14px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            min-height: 60px;
+        }
+
+        .task-counter {
+            font-size: 14px;
+            color: #7a7068;
+            background-color: #fffdf8;
+            padding: 6px 14px;
+            border-radius: 8px;
+        }
+
+        /* ===== REMARK POPUP ===== */
+        .remark-popup {
+            position: fixed;
+            bottom: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: none;
+            align-items: center;
+            gap: 14px;
+            background-color: #fffdf8;
+            padding: 14px 22px;
+            border-radius: 14px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+            animation: popIn 0.3s ease;
+            z-index: 100;
+        }
+
+        .remark-popup.visible {
+            display: flex;
+        }
+
+        .remark-popup img {
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .remark-popup .remark-text {
+            font-size: 15px;
+            color: #4a4340;
+            max-width: 280px;
+        }
+
+        @keyframes popIn {
+            0% { opacity: 0; transform: translateX(-50%) translateY(20px); }
+            100% { opacity: 1; transform: translateX(-50%) translateY(0); }
+        }
+
+        /* ===== EMPTY STATE ===== */
+        .empty-state {
+            text-align: center;
+            color: #b0a89e;
+            font-size: 16px;
+            margin-top: 60px;
+        }
+
+        /* ===== PROFILE PHOTO (left side) ===== */
+        .profile-area {
+            position: fixed;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .profile-photo-wrapper {
+            position: relative;
+            height: 50vh;
+        }
+
+        .profile-photo {
+            height: 50vh;
+            width: auto;
+            object-fit: contain;
+            transition: transform 0.1s ease;
+        }
+
+        .profile-photo.shake {
+            animation: shakeIt 0.4s ease 3;
+        }
+
+        @keyframes shakeIt {
+            0% { transform: rotate(0deg); }
+            25% { transform: rotate(6deg); }
+            50% { transform: rotate(-6deg); }
+            75% { transform: rotate(4deg); }
+            100% { transform: rotate(0deg); }
+        }
+
+        /* ===== CONFETTI ===== */
+        .confetti-piece {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            opacity: 1;
+            pointer-events: none;
+        }
+
+        @keyframes confettiFall {
+            0% {
+                opacity: 1;
+                transform: translate(0, 0) rotate(0deg) scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: translate(var(--x), var(--y)) rotate(var(--r)) scale(0.3);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- PROFILE PHOTO (left side) -->
+    <div class="profile-area">
+        <div class="profile-photo-wrapper" id="profileWrapper">
+            <img class="profile-photo" id="profilePhoto" src="images/me.png" alt="Me" />
+        </div>
+    </div>
+
+    <!-- DATE & TIME -->
+    <div class="datetime">
+        <div class="time" id="timeDisplay"></div>
+        <div id="dateDisplay"></div>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="container">
+        <h1>To-Do List</h1>
+
+        <ul class="task-list" id="taskList">
+            <!-- Tasks go here -->
+        </ul>
+
+        <div class="empty-state" id="emptyState">
+            No tasks yet! Hit the + button to add one.
+        </div>
+
+        <!-- Input field for adding tasks -->
+        <div class="add-task-input-area" id="addTaskArea">
+            <input type="text" id="taskInput" placeholder="What do you need to do?" />
+        </div>
+    </div>
+
+    <!-- + BUTTON -->
+    <button class="add-task-btn" id="addBtn">+</button>
+
+    <!-- REMARK POPUP -->
+    <div class="remark-popup" id="remarkPopup">
+        <img id="remarkImg" src="" alt="" />
+        <div class="remark-text" id="remarkText"></div>
+    </div>
+
+    <!-- BOTTOM BAR -->
+    <div class="bottom-bar">
+        <div class="task-counter" id="taskCounter">0 / 0 tasks finished</div>
+    </div>
+
+    <script>
+        // ===== DATA =====
+        // We load tasks from localStorage (browser's built-in storage)
+        // so they persist even when you close the browser
+        let tasks = JSON.parse(localStorage.getItem('todoTasks')) || [];
+
+        // ===== IMAGES =====
+        const narutoImg = 'images/naruto.jpg';
+        const itachiImg = 'images/itachi.jpg';
+
+        // ===== REMARKS =====
+        const congratsRemarks = [
+            "Believe it! You finished that task, dattebayo!",
+            "That's the spirit! One step closer to Hokage!",
+            "You did it! Naruto is proud of you!",
+            "Way to go! Never give up, that's your ninja way!",
+            "Amazing work! You're stronger than you think!",
+            "Mission complete! Ichiraku ramen time!",
+            "You crushed it! That's the Will of Fire!",
+            "Awesome job! Even Kakashi-sensei would be impressed!",
+            "Task defeated! You're on your way to becoming Hokage!",
+            "Nice one! Your ninja way is unstoppable!"
+        ];
+
+        const encourageRemarks = [
+            "Those who abandon their tasks are worse than scum.",
+            "You have the power to change your fate.",
+            "Keep going. Every ninja has tasks to complete.",
+            "Don't give up. That is the true measure of a shinobi.",
+            "You are not alone in this. Keep pushing forward.",
+            "People's lives don't end when they fail. They end when they lose the will to try.",
+            "Even the strongest shinobi must do their to-do list.",
+            "Knowledge and awareness are vague, and perhaps better called illusions. But you can finish this.",
+            "Those who can't acknowledge their own tasks will fail. Keep going.",
+            "You are already stronger than you think. Now finish that task."
+        ];
+
+        // ===== DOM ELEMENTS =====
+        const taskList = document.getElementById('taskList');
+        const taskInput = document.getElementById('taskInput');
+        const addBtn = document.getElementById('addBtn');
+        const addTaskArea = document.getElementById('addTaskArea');
+        const taskCounter = document.getElementById('taskCounter');
+        const emptyState = document.getElementById('emptyState');
+        const remarkPopup = document.getElementById('remarkPopup');
+        const remarkImg = document.getElementById('remarkImg');
+        const remarkText = document.getElementById('remarkText');
+
+        let remarkTimeout = null;
+
+        // ===== SAVE TASKS =====
+        function saveTasks() {
+            localStorage.setItem('todoTasks', JSON.stringify(tasks));
+        }
+
+        // ===== RENDER TASKS =====
+        function renderTasks() {
+            taskList.innerHTML = '';
+
+            if (tasks.length === 0) {
+                emptyState.style.display = 'block';
+            } else {
+                emptyState.style.display = 'none';
+            }
+
+            tasks.forEach(function(task, index) {
+                const li = document.createElement('li');
+                li.className = 'task-item';
+
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.checked = task.done;
+                checkbox.addEventListener('change', function() {
+                    toggleTask(index);
+                });
+
+                const text = document.createElement('span');
+                text.className = 'task-text' + (task.done ? ' done' : '');
+                text.style.cursor = 'pointer';
+                text.addEventListener('click', function() {
+                    toggleTask(index);
+                });
+                if (task.done) {
+                    const inner = document.createElement('span');
+                    inner.className = 'strikethrough';
+                    inner.textContent = task.name;
+                    text.appendChild(inner);
+                } else {
+                    text.textContent = task.name;
+                }
+
+                const deleteBtn = document.createElement('button');
+                deleteBtn.className = 'delete-btn';
+                deleteBtn.textContent = '✕';
+                deleteBtn.title = 'Delete task';
+                deleteBtn.addEventListener('click', function() {
+                    deleteTask(index);
+                });
+
+                li.appendChild(checkbox);
+                li.appendChild(text);
+                li.appendChild(deleteBtn);
+                taskList.appendChild(li);
+            });
+
+            updateCounter();
+        }
+
+        // ===== ADD TASK =====
+        function addTask(name) {
+            if (name.trim() === '') return;
+            tasks.push({ name: name.trim(), done: false });
+            saveTasks();
+            renderTasks();
+            taskInput.value = '';
+        }
+
+        // ===== DELETE TASK =====
+        function deleteTask(index) {
+            tasks.splice(index, 1);
+            saveTasks();
+            renderTasks();
+        }
+
+        // ===== TOGGLE TASK =====
+        let confettiTimeout = null;
+
+        function toggleTask(index) {
+            tasks[index].done = !tasks[index].done;
+            saveTasks();
+            renderTasks();
+
+            if (tasks[index].done) {
+                showRemark('congrats');
+                triggerCelebration();
+            } else {
+                showRemark('encourage');
+            }
+        }
+
+        // ===== CELEBRATION (confetti + shake) =====
+        function triggerCelebration() {
+            const photo = document.getElementById('profilePhoto');
+            const wrapper = document.getElementById('profileWrapper');
+
+            // Shake the photo
+            photo.classList.remove('shake');
+            // This tiny delay forces the browser to restart the animation
+            setTimeout(function() { photo.classList.add('shake'); }, 10);
+
+            // Clear old confetti timeout
+            if (confettiTimeout) clearTimeout(confettiTimeout);
+
+            // Create confetti pieces
+            var colors = ['#1b2a4a', '#1a2744', '#2c3e6b', '#c0392b', '#e74c3c', '#d44035'];
+            for (var i = 0; i < 30; i++) {
+                var piece = document.createElement('div');
+                piece.className = 'confetti-piece';
+
+                // Random color
+                piece.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+
+                // Random shape (some squares, some rectangles)
+                var size = 6 + Math.random() * 6;
+                piece.style.width = size + 'px';
+                piece.style.height = (Math.random() > 0.5 ? size : size * 0.5) + 'px';
+                piece.style.borderRadius = (Math.random() > 0.5 ? '2px' : '0');
+
+                // Start from center of the photo
+                piece.style.left = '50%';
+                piece.style.top = '50%';
+
+                // Random direction to fly out
+                var angle = Math.random() * Math.PI * 2;
+                var distance = 80 + Math.random() * 120;
+                var xEnd = Math.cos(angle) * distance;
+                var yEnd = Math.sin(angle) * distance;
+                var rotation = (Math.random() - 0.5) * 720;
+
+                piece.style.setProperty('--x', xEnd + 'px');
+                piece.style.setProperty('--y', yEnd + 'px');
+                piece.style.setProperty('--r', rotation + 'deg');
+
+                var duration = 0.8 + Math.random() * 0.6;
+                piece.style.animation = 'confettiFall ' + duration + 's ease-out forwards';
+                piece.style.animationDelay = (Math.random() * 0.2) + 's';
+
+                wrapper.appendChild(piece);
+            }
+
+            // Clean up confetti after 5 seconds
+            confettiTimeout = setTimeout(function() {
+                var pieces = wrapper.querySelectorAll('.confetti-piece');
+                pieces.forEach(function(p) { p.remove(); });
+                photo.classList.remove('shake');
+            }, 5000);
+        }
+
+        // ===== UPDATE COUNTER =====
+        function updateCounter() {
+            const total = tasks.length;
+            const done = tasks.filter(function(t) { return t.done; }).length;
+            taskCounter.textContent = done + ' / ' + total + ' tasks finished';
+        }
+
+        // ===== SHOW REMARK =====
+        function showRemark(type) {
+            // Clear any existing timeout
+            if (remarkTimeout) {
+                clearTimeout(remarkTimeout);
+            }
+
+            if (type === 'congrats') {
+                const msg = congratsRemarks[Math.floor(Math.random() * congratsRemarks.length)];
+                remarkImg.src = narutoImg;
+                remarkImg.alt = 'Naruto';
+                remarkText.textContent = msg;
+            } else {
+                const msg = encourageRemarks[Math.floor(Math.random() * encourageRemarks.length)];
+                remarkImg.src = itachiImg;
+                remarkImg.alt = 'Itachi';
+                remarkText.textContent = msg;
+            }
+
+            remarkPopup.classList.add('visible');
+
+            // Disappear after 5 seconds
+            remarkTimeout = setTimeout(function() {
+                remarkPopup.classList.remove('visible');
+            }, 5000);
+        }
+
+        // ===== DATE & TIME =====
+        function updateDateTime() {
+            const now = new Date();
+
+            // Time
+            let hours = now.getHours();
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+            hours = hours % 12;
+            if (hours === 0) hours = 12;
+            document.getElementById('timeDisplay').textContent = hours + ':' + minutes + ' ' + ampm;
+
+            // Date
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            document.getElementById('dateDisplay').textContent = now.toLocaleDateString('en-US', options);
+        }
+
+        // Update time every second
+        updateDateTime();
+        setInterval(updateDateTime, 1000);
+
+        // ===== EVENT LISTENERS =====
+
+        // + button toggles the input field
+        addBtn.addEventListener('click', function() {
+            addTaskArea.classList.toggle('visible');
+            if (addTaskArea.classList.contains('visible')) {
+                taskInput.focus();
+            }
+        });
+
+        // Press Enter to add task
+        taskInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                addTask(taskInput.value);
+            }
+        });
+
+        // ===== INITIALIZE =====
+        renderTasks();
+    </script>
+</body>
+</html>
