@@ -4,13 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>To-Do List</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&display=swap">
     <style>
         /* ===== GLOBAL STYLES ===== */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Comic Sans MS', 'Comic Sans', cursive;
+            font-family: 'Comic Sans MS', 'Comic Neue', 'Comic Sans', cursive;
         }
 
         body {
@@ -172,7 +173,7 @@
             flex: 1;
             padding: 12px 16px;
             font-size: 16px;
-            font-family: 'Comic Sans MS', 'Comic Sans', cursive;
+            font-family: 'Comic Sans MS', 'Comic Neue', 'Comic Sans', cursive;
             border: 2px solid #ddd5c8;
             border-radius: 10px;
             background-color: #fffdf8;
@@ -313,6 +314,59 @@
                 transform: translate(var(--x), var(--y)) rotate(var(--r)) scale(0.3);
             }
         }
+        /* ===== MOBILE STYLES ===== */
+        @media (max-width: 768px) {
+            body {
+                padding: 20px 16px 120px 16px;
+            }
+
+            /* Move date/time below the title instead of top-right */
+            .datetime {
+                position: static;
+                text-align: center;
+                margin-bottom: 16px;
+            }
+
+            .datetime .time {
+                font-size: 20px;
+            }
+
+            h1 {
+                font-size: 26px;
+                margin-bottom: 8px;
+            }
+
+            /* Shrink photo and put it at the top, centered */
+            .profile-area {
+                position: static;
+                transform: none;
+                margin-bottom: 20px;
+            }
+
+            .profile-photo-wrapper {
+                height: auto;
+            }
+
+            .profile-photo {
+                height: auto;
+                width: 120px;
+                border-radius: 12px;
+            }
+
+            /* Move + button to bottom-right, above the bar */
+            .add-task-btn {
+                position: fixed;
+                right: 16px;
+                bottom: 75px;
+                top: auto;
+                margin: 0;
+            }
+
+            .container {
+                margin-top: 10px;
+                max-width: 100%;
+            }
+        }
     </style>
 </head>
 <body>
@@ -349,7 +403,7 @@
     </div>
 
     <!-- + BUTTON -->
-    <button class="add-task-btn" id="addBtn">+</button>
+    <button class="add-task-btn" id="addBtn" style="font-family: Arial, sans-serif;">+</button>
 
     <!-- REMARK POPUP -->
     <div class="remark-popup" id="remarkPopup">
