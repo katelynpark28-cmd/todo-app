@@ -574,6 +574,7 @@
                 <option value="1440">1 day before</option>
             </select>
             <div class="modal-actions">
+                <button class="cancel-btn" id="testNotifBtn">Test notification</button>
                 <button class="confirm-btn" id="settingsClose">Done</button>
             </div>
         </div>
@@ -670,6 +671,26 @@
 
         document.getElementById('settingsToggle').addEventListener('click', function() {
             document.getElementById('settingsModal').classList.add('visible');
+        });
+
+        document.getElementById('testNotifBtn').addEventListener('click', function() {
+            if ('Notification' in window) {
+                if (Notification.permission === 'granted') {
+                    new Notification('Test notification!', { body: 'If you see this, notifications work!' });
+                } else if (Notification.permission === 'denied') {
+                    alert('Notifications are blocked. Check your browser settings.');
+                } else {
+                    Notification.requestPermission().then(function(p) {
+                        if (p === 'granted') {
+                            new Notification('Test notification!', { body: 'If you see this, notifications work!' });
+                        } else {
+                            alert('You denied notification permission.');
+                        }
+                    });
+                }
+            } else {
+                alert('Your browser does not support notifications.');
+            }
         });
 
         document.getElementById('settingsClose').addEventListener('click', function() {
