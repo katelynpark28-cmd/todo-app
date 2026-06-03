@@ -344,10 +344,10 @@
         .task-item .task-text { flex: 1; font-size: 16px; color: var(--text); word-break: break-word; }
         .task-item .task-text.done { color: var(--text-done); }
 
-        .task-item .task-text.done .strikethrough { position: relative; }
-        .task-item .task-text.done .strikethrough::after {
-            content: ''; position: absolute; left: 0; right: 0; top: 50%;
-            height: 2px; background-color: var(--text-done);
+        .task-item .task-text.done .strikethrough {
+            text-decoration: line-through;
+            text-decoration-thickness: 2px;
+            text-decoration-color: var(--text-done);
         }
 
         .task-item .task-due {
