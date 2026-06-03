@@ -4,6 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>To-Do List</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#4a9e8e">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="To-Do List">
+    <link rel="apple-touch-icon" href="images/icon-192.png">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&display=swap">
     <style>
         /* ===== CSS VARIABLES FOR THEMING ===== */
@@ -674,29 +680,18 @@
         });
 
         document.getElementById('testNotifBtn').addEventListener('click', function() {
-            console.log('Button clicked');
-            console.log('Notification support:', 'Notification' in window);
-            console.log('Permission:', Notification.permission);
-
             if ('Notification' in window) {
                 if (Notification.permission === 'granted') {
-                    console.log('Creating notification...');
-                    var n = new Notification('Test notification!', { body: 'If you see this, notifications work!' });
-                    console.log('Notification created:', n);
-                    n.onerror = function(e) { console.log('Notification error:', e); };
-                    n.onshow = function() { console.log('Notification shown!'); };
-                    alert('Notification sent! Permission: granted. Check your taskbar/notification area.');
+                    new Notification('Test notification!', { body: 'If you see this, notifications work!' });
                 } else if (Notification.permission === 'denied') {
-                    alert('Notifications are BLOCKED. Go to Chrome settings > Site settings > Notifications and allow this site.');
+                    alert('Notifications are blocked. Go to Chrome settings > Site settings > Notifications and allow this site.');
                 } else {
-                    console.log('Requesting permission...');
                     Notification.requestPermission().then(function(p) {
-                        console.log('Permission result:', p);
-                        alert('Permission result: ' + p + '. Click Test again.');
+                        if (p === 'granted') {
+                            new Notification('Test notification!', { body: 'If you see this, notifications work!' });
+                        }
                     });
                 }
-            } else {
-                alert('Your browser does not support notifications.');
             }
         });
 
@@ -1334,6 +1329,11 @@
         // ===== INITIALIZE =====
         var lastList = localStorage.getItem('lastOpenList');
         if (lastList) { openList(lastList); } else { renderMenu(); }
+
+        // Register service worker for PWA
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js');
+        }
     </script>
 </body>
 </html>
