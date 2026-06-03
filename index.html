@@ -20,7 +20,260 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+        }
+
+        /* ===== MENU SCREEN ===== */
+        .menu-screen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 20px;
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .menu-screen h1 {
+            color: #4a4340;
+            font-size: 32px;
+            margin-bottom: 30px;
+        }
+
+        .menu-buttons {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 30px;
+            width: 100%;
+        }
+
+        .menu-btn {
+            flex: 1;
+            padding: 14px 20px;
+            font-size: 16px;
+            font-family: 'Comic Sans MS', 'Comic Neue', 'Comic Sans', cursive;
+            border: 2px solid #ddd5c8;
+            border-radius: 12px;
+            background-color: #fffdf8;
+            color: #4a4340;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .menu-btn:hover {
+            background-color: #faf6ef;
+        }
+
+        .menu-btn.primary {
+            background-color: #e8943a;
+            color: white;
+            border-color: #e8943a;
+        }
+
+        .menu-btn.primary:hover {
+            background-color: #d4832e;
+        }
+
+        /* Saved list buttons */
+        .saved-lists {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .saved-list-btn {
+            width: 100%;
+            padding: 16px 20px;
+            font-size: 16px;
+            font-family: 'Comic Sans MS', 'Comic Neue', 'Comic Sans', cursive;
+            border: 2px solid #ddd5c8;
+            border-radius: 12px;
+            background-color: #fffdf8;
+            color: #4a4340;
+            cursor: pointer;
+            text-align: left;
+            transition: background-color 0.2s ease;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .saved-list-btn:hover {
+            background-color: #faf6ef;
+        }
+
+        .saved-list-btn .list-title {
+            font-weight: bold;
+        }
+
+        .saved-list-btn .list-code {
+            font-size: 13px;
+            color: #9a928a;
+        }
+
+        .premium-msg {
+            color: #b0a89e;
+            font-size: 14px;
+            text-align: center;
+            margin-top: 10px;
+            font-style: italic;
+        }
+
+        .premium-msg span {
+            color: #e8943a;
+        }
+
+        /* Modal overlay for prompts */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: rgba(0,0,0,0.4);
+            z-index: 200;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-overlay.visible {
+            display: flex;
+        }
+
+        .modal-box {
+            background-color: #fffdf8;
+            border-radius: 16px;
+            padding: 30px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+        }
+
+        .modal-box h2 {
+            color: #4a4340;
+            font-size: 20px;
+            margin-bottom: 16px;
+        }
+
+        .modal-box input {
+            width: 100%;
+            padding: 12px 16px;
+            font-size: 16px;
+            font-family: 'Comic Sans MS', 'Comic Neue', 'Comic Sans', cursive;
+            border: 2px solid #ddd5c8;
+            border-radius: 10px;
+            background-color: #f5f0e8;
+            color: #4a4340;
+            outline: none;
+            margin-bottom: 16px;
+        }
+
+        .modal-box input:focus {
+            border-color: #e8943a;
+        }
+
+        .modal-box input::placeholder {
+            color: #c0b8ae;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+
+        .modal-actions button {
+            padding: 10px 20px;
+            font-size: 14px;
+            font-family: 'Comic Sans MS', 'Comic Neue', 'Comic Sans', cursive;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .modal-actions .cancel-btn {
+            background-color: #ece6db;
+            color: #7a7068;
+        }
+
+        .modal-actions .confirm-btn {
+            background-color: #e8943a;
+            color: white;
+        }
+
+        .modal-error {
+            color: #c0392b;
+            font-size: 13px;
+            margin-bottom: 10px;
+            display: none;
+        }
+
+        /* ===== TODO SCREEN ===== */
+        .todo-screen {
+            display: none;
+            flex-direction: column;
+            align-items: center;
             padding: 40px 20px 120px 20px;
+            width: 100%;
+        }
+
+        .todo-screen.visible {
+            display: flex;
+        }
+
+        /* Back button */
+        .back-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: #7a7068;
+            cursor: pointer;
+            font-family: 'Comic Sans MS', 'Comic Neue', 'Comic Sans', cursive;
+            z-index: 50;
+        }
+
+        .back-btn:hover {
+            color: #4a4340;
+        }
+
+        /* List title (editable) */
+        .list-title-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 4px;
+        }
+
+        .list-title-display {
+            font-size: 28px;
+            color: #4a4340;
+            font-weight: bold;
+            cursor: pointer;
+            border-bottom: 2px dashed transparent;
+        }
+
+        .list-title-display:hover {
+            border-bottom-color: #ddd5c8;
+        }
+
+        .list-code-display {
+            font-size: 13px;
+            color: #9a928a;
+            margin-bottom: 24px;
+            cursor: pointer;
+        }
+
+        .list-code-display:hover {
+            color: #7a7068;
+        }
+
+        .copied-msg {
+            color: #e8943a;
+            font-size: 12px;
+            margin-left: 6px;
+            display: none;
         }
 
         /* ===== DATE & TIME (top right) ===== */
@@ -31,6 +284,7 @@
             text-align: right;
             color: #7a7068;
             font-size: 14px;
+            z-index: 50;
         }
 
         .datetime .time {
@@ -43,14 +297,7 @@
         .container {
             width: 100%;
             max-width: 550px;
-            margin-top: 30px;
-        }
-
-        h1 {
-            text-align: center;
-            color: #4a4340;
-            font-size: 32px;
-            margin-bottom: 30px;
+            margin-top: 10px;
         }
 
         /* ===== TASK LIST ===== */
@@ -149,7 +396,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: background-color 0.2s ease, scale 0.2s ease;
+            transition: background-color 0.2s ease;
             box-shadow: 0 2px 8px rgba(0,0,0,0.15);
         }
 
@@ -314,13 +561,21 @@
                 transform: translate(var(--x), var(--y)) rotate(var(--r)) scale(0.3);
             }
         }
+
+        /* ===== LOADING SPINNER ===== */
+        .loading {
+            color: #b0a89e;
+            font-size: 16px;
+            text-align: center;
+            margin-top: 40px;
+        }
+
         /* ===== MOBILE STYLES ===== */
         @media (max-width: 768px) {
-            body {
+            .todo-screen {
                 padding: 20px 16px 120px 16px;
             }
 
-            /* Move date/time below the title instead of top-right */
             .datetime {
                 position: static;
                 text-align: center;
@@ -331,12 +586,10 @@
                 font-size: 20px;
             }
 
-            h1 {
-                font-size: 26px;
-                margin-bottom: 8px;
+            .list-title-display {
+                font-size: 22px;
             }
 
-            /* Shrink photo and put it at the top, centered */
             .profile-area {
                 position: static;
                 transform: none;
@@ -353,7 +606,6 @@
                 border-radius: 12px;
             }
 
-            /* Move + button to bottom-right, above the bar */
             .add-task-btn {
                 position: fixed;
                 right: 16px;
@@ -366,68 +618,153 @@
                 margin-top: 10px;
                 max-width: 100%;
             }
+
+            .back-btn {
+                position: static;
+                margin-bottom: 10px;
+                align-self: flex-start;
+            }
         }
     </style>
 </head>
 <body>
 
-    <!-- PROFILE PHOTO (left side) -->
-    <div class="profile-area">
-        <div class="profile-photo-wrapper" id="profileWrapper">
-            <img class="profile-photo" id="profilePhoto" src="images/me.png" alt="Me" />
-        </div>
-    </div>
-
-    <!-- DATE & TIME -->
-    <div class="datetime">
-        <div class="time" id="timeDisplay"></div>
-        <div id="dateDisplay"></div>
-    </div>
-
-    <!-- MAIN CONTENT -->
-    <div class="container">
+    <!-- ==================== MENU SCREEN ==================== -->
+    <div class="menu-screen" id="menuScreen">
         <h1>To-Do List</h1>
 
-        <ul class="task-list" id="taskList">
-            <!-- Tasks go here -->
-        </ul>
-
-        <div class="empty-state" id="emptyState">
-            No tasks yet! Hit the + button to add one.
+        <div class="menu-buttons">
+            <button class="menu-btn primary" id="newListBtn">+ New List</button>
+            <button class="menu-btn" id="joinListBtn">Join List</button>
         </div>
 
-        <!-- Input field for adding tasks -->
-        <div class="add-task-input-area" id="addTaskArea">
-            <input type="text" id="taskInput" placeholder="What do you need to do?" />
+        <div class="saved-lists" id="savedLists">
+            <!-- Saved list buttons go here -->
         </div>
     </div>
 
-    <!-- + BUTTON -->
-    <button class="add-task-btn" id="addBtn" style="font-family: Arial, sans-serif;">+</button>
-
-    <!-- REMARK POPUP -->
-    <div class="remark-popup" id="remarkPopup">
-        <img id="remarkImg" src="" alt="" />
-        <div class="remark-text" id="remarkText"></div>
+    <!-- New List Modal -->
+    <div class="modal-overlay" id="newListModal">
+        <div class="modal-box">
+            <h2>What do you want to title your list?</h2>
+            <input type="text" id="newListTitle" placeholder="e.g. Katelyn's Chores" maxlength="40" />
+            <div class="modal-error" id="newListError"></div>
+            <div class="modal-actions">
+                <button class="cancel-btn" id="newListCancel">Cancel</button>
+                <button class="confirm-btn" id="newListConfirm">Create</button>
+            </div>
+        </div>
     </div>
 
-    <!-- BOTTOM BAR -->
-    <div class="bottom-bar">
-        <div class="task-counter" id="taskCounter">0 / 0 tasks finished</div>
+    <!-- Join List Modal -->
+    <div class="modal-overlay" id="joinListModal">
+        <div class="modal-box">
+            <h2>Enter the list code</h2>
+            <input type="text" id="joinListCode" placeholder="8-character code" maxlength="8" />
+            <div class="modal-error" id="joinListError"></div>
+            <div class="modal-actions">
+                <button class="cancel-btn" id="joinListCancel">Cancel</button>
+                <button class="confirm-btn" id="joinListConfirm">Join</button>
+            </div>
+        </div>
     </div>
+
+    <!-- Rename List Modal -->
+    <div class="modal-overlay" id="renameListModal">
+        <div class="modal-box">
+            <h2>Rename your list</h2>
+            <input type="text" id="renameListTitle" placeholder="New title" maxlength="40" />
+            <div class="modal-actions">
+                <button class="cancel-btn" id="renameListCancel">Cancel</button>
+                <button class="confirm-btn" id="renameListConfirm">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== TODO SCREEN ==================== -->
+    <div class="todo-screen" id="todoScreen">
+
+        <!-- Back button -->
+        <button class="back-btn" id="backBtn">← Back</button>
+
+        <!-- PROFILE PHOTO (left side) -->
+        <div class="profile-area">
+            <div class="profile-photo-wrapper" id="profileWrapper">
+                <img class="profile-photo" id="profilePhoto" src="images/me.png" alt="Me" />
+            </div>
+        </div>
+
+        <!-- DATE & TIME -->
+        <div class="datetime">
+            <div class="time" id="timeDisplay"></div>
+            <div id="dateDisplay"></div>
+        </div>
+
+        <!-- List title + code -->
+        <div class="list-title-header">
+            <span class="list-title-display" id="listTitleDisplay" title="Click to rename"></span>
+        </div>
+        <div class="list-code-display" id="listCodeDisplay" title="Click to copy code">
+            Code: <span id="listCodeText"></span>
+            <span class="copied-msg" id="copiedMsg">Copied!</span>
+        </div>
+
+        <!-- MAIN CONTENT -->
+        <div class="container">
+            <ul class="task-list" id="taskList"></ul>
+
+            <div class="empty-state" id="emptyState">
+                No tasks yet! Hit the + button to add one.
+            </div>
+
+            <div class="loading" id="loadingState" style="display:none;">
+                Loading tasks...
+            </div>
+
+            <div class="add-task-input-area" id="addTaskArea">
+                <input type="text" id="taskInput" placeholder="What do you need to do?" />
+            </div>
+        </div>
+
+        <!-- + BUTTON -->
+        <button class="add-task-btn" id="addBtn" style="font-family: Arial, sans-serif;">+</button>
+
+        <!-- REMARK POPUP -->
+        <div class="remark-popup" id="remarkPopup">
+            <img id="remarkImg" src="" alt="" />
+            <div class="remark-text" id="remarkText"></div>
+        </div>
+
+        <!-- BOTTOM BAR -->
+        <div class="bottom-bar">
+            <div class="task-counter" id="taskCounter">0 / 0 tasks finished</div>
+        </div>
+    </div>
+
+    <!-- ==================== FIREBASE ==================== -->
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 
     <script>
-        // ===== DATA =====
-        // We load tasks from localStorage (browser's built-in storage)
-        // so they persist even when you close the browser
-        let tasks = JSON.parse(localStorage.getItem('todoTasks')) || [];
+        // ===== FIREBASE CONFIG =====
+        var firebaseConfig = {
+            apiKey: "AIzaSyBQnPufsqODHB9oigEidv_Q684akkI6jP4",
+            authDomain: "todo-app-1e82b.firebaseapp.com",
+            projectId: "todo-app-1e82b",
+            storageBucket: "todo-app-1e82b.firebasestorage.app",
+            messagingSenderId: "354871341876",
+            appId: "1:354871341876:web:285e3e1df7db37b6f1eb61"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        var db = firebase.firestore();
 
         // ===== IMAGES =====
-        const narutoImg = 'images/naruto.jpg';
-        const itachiImg = 'images/itachi.jpg';
+        var narutoImg = 'images/naruto.jpg';
+        var itachiImg = 'images/itachi.jpg';
 
         // ===== REMARKS =====
-        const congratsRemarks = [
+        var congratsRemarks = [
             "Believe it! You finished that task, dattebayo!",
             "That's the spirit! One step closer to Hokage!",
             "You did it! Naruto is proud of you!",
@@ -440,7 +777,7 @@
             "Nice one! Your ninja way is unstoppable!"
         ];
 
-        const encourageRemarks = [
+        var encourageRemarks = [
             "Those who abandon their tasks are worse than scum.",
             "You have the power to change your fate.",
             "Keep going. Every ninja has tasks to complete.",
@@ -453,53 +790,270 @@
             "You are already stronger than you think. Now finish that task."
         ];
 
+        // ===== STATE =====
+        var currentListCode = null;
+        var currentTasks = [];
+        var unsubscribe = null; // For real-time listener
+        var remarkTimeout = null;
+        var confettiTimeout = null;
+
+        // Saved lists stored in localStorage (which lists this device has access to)
+        function getSavedLists() {
+            return JSON.parse(localStorage.getItem('savedLists')) || [];
+        }
+
+        function saveSavedLists(lists) {
+            localStorage.setItem('savedLists', JSON.stringify(lists));
+        }
+
+        function addToSavedLists(code, title) {
+            var lists = getSavedLists();
+            // Check if already saved
+            var exists = false;
+            for (var i = 0; i < lists.length; i++) {
+                if (lists[i].code === code) {
+                    lists[i].title = title;
+                    exists = true;
+                    break;
+                }
+            }
+            if (!exists) {
+                lists.push({ code: code, title: title });
+            }
+            saveSavedLists(lists);
+        }
+
+        // ===== GENERATE 8-CHAR CODE =====
+        function generateCode() {
+            var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+            var code = '';
+            for (var i = 0; i < 8; i++) {
+                code += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            return code;
+        }
+
         // ===== DOM ELEMENTS =====
-        const taskList = document.getElementById('taskList');
-        const taskInput = document.getElementById('taskInput');
-        const addBtn = document.getElementById('addBtn');
-        const addTaskArea = document.getElementById('addTaskArea');
-        const taskCounter = document.getElementById('taskCounter');
-        const emptyState = document.getElementById('emptyState');
-        const remarkPopup = document.getElementById('remarkPopup');
-        const remarkImg = document.getElementById('remarkImg');
-        const remarkText = document.getElementById('remarkText');
+        var menuScreen = document.getElementById('menuScreen');
+        var todoScreen = document.getElementById('todoScreen');
+        var savedListsDiv = document.getElementById('savedLists');
 
-        let remarkTimeout = null;
+        var newListBtn = document.getElementById('newListBtn');
+        var joinListBtn = document.getElementById('joinListBtn');
 
-        // ===== SAVE TASKS =====
-        function saveTasks() {
-            localStorage.setItem('todoTasks', JSON.stringify(tasks));
+        var newListModal = document.getElementById('newListModal');
+        var newListTitle = document.getElementById('newListTitle');
+        var newListError = document.getElementById('newListError');
+        var newListCancel = document.getElementById('newListCancel');
+        var newListConfirm = document.getElementById('newListConfirm');
+
+        var joinListModal = document.getElementById('joinListModal');
+        var joinListCode = document.getElementById('joinListCode');
+        var joinListError = document.getElementById('joinListError');
+        var joinListCancel = document.getElementById('joinListCancel');
+        var joinListConfirm = document.getElementById('joinListConfirm');
+
+        var renameListModal = document.getElementById('renameListModal');
+        var renameListTitleInput = document.getElementById('renameListTitle');
+        var renameListCancel = document.getElementById('renameListCancel');
+        var renameListConfirm = document.getElementById('renameListConfirm');
+
+        var backBtn = document.getElementById('backBtn');
+        var listTitleDisplay = document.getElementById('listTitleDisplay');
+        var listCodeText = document.getElementById('listCodeText');
+        var listCodeDisplay = document.getElementById('listCodeDisplay');
+        var copiedMsg = document.getElementById('copiedMsg');
+
+        var taskList = document.getElementById('taskList');
+        var taskInput = document.getElementById('taskInput');
+        var addBtn = document.getElementById('addBtn');
+        var addTaskArea = document.getElementById('addTaskArea');
+        var taskCounter = document.getElementById('taskCounter');
+        var emptyState = document.getElementById('emptyState');
+        var loadingState = document.getElementById('loadingState');
+        var remarkPopup = document.getElementById('remarkPopup');
+        var remarkImg = document.getElementById('remarkImg');
+        var remarkText = document.getElementById('remarkText');
+
+        // ===== RENDER MENU =====
+        function renderMenu() {
+            var lists = getSavedLists();
+            savedListsDiv.innerHTML = '';
+
+            if (lists.length > 0) {
+                var label = document.createElement('div');
+                label.style.color = '#9a928a';
+                label.style.fontSize = '13px';
+                label.style.marginBottom = '6px';
+                label.textContent = 'Your lists';
+                savedListsDiv.appendChild(label);
+            }
+
+            for (var i = 0; i < lists.length; i++) {
+                (function(list) {
+                    var btn = document.createElement('button');
+                    btn.className = 'saved-list-btn';
+
+                    var titleSpan = document.createElement('span');
+                    titleSpan.className = 'list-title';
+                    titleSpan.textContent = list.title || 'Untitled List';
+
+                    var codeSpan = document.createElement('span');
+                    codeSpan.className = 'list-code';
+                    codeSpan.textContent = list.code;
+
+                    btn.appendChild(titleSpan);
+                    btn.appendChild(codeSpan);
+
+                    btn.addEventListener('click', function() {
+                        openList(list.code);
+                    });
+
+                    savedListsDiv.appendChild(btn);
+                })(lists[i]);
+            }
+
+            // Premium message if at max
+            if (lists.length >= 5) {
+                newListBtn.disabled = true;
+                newListBtn.style.opacity = '0.5';
+                newListBtn.style.cursor = 'default';
+                var msg = document.createElement('div');
+                msg.className = 'premium-msg';
+                msg.innerHTML = 'Max 5 lists reached. <span>Get Premium ✨</span> for unlimited lists!';
+                savedListsDiv.appendChild(msg);
+            } else {
+                newListBtn.disabled = false;
+                newListBtn.style.opacity = '1';
+                newListBtn.style.cursor = 'pointer';
+            }
+        }
+
+        // ===== SHOW/HIDE SCREENS =====
+        function showMenu() {
+            // Stop listening to the current list
+            if (unsubscribe) {
+                unsubscribe();
+                unsubscribe = null;
+            }
+            currentListCode = null;
+            currentTasks = [];
+            todoScreen.classList.remove('visible');
+            menuScreen.style.display = 'flex';
+            renderMenu();
+        }
+
+        function showTodo() {
+            menuScreen.style.display = 'none';
+            todoScreen.classList.add('visible');
+        }
+
+        // ===== CREATE NEW LIST =====
+        function createNewList(title) {
+            var code = generateCode();
+            var listData = {
+                title: title || 'Untitled List',
+                code: code,
+                tasks: [],
+                createdAt: firebase.firestore.FieldValue.serverTimestamp()
+            };
+
+            db.collection('lists').doc(code).set(listData).then(function() {
+                addToSavedLists(code, listData.title);
+                openList(code);
+            }).catch(function(error) {
+                alert('Error creating list: ' + error.message);
+            });
+        }
+
+        // ===== OPEN A LIST =====
+        function openList(code) {
+            currentListCode = code;
+            loadingState.style.display = 'block';
+            emptyState.style.display = 'none';
+            taskList.innerHTML = '';
+            showTodo();
+
+            // Stop any previous listener
+            if (unsubscribe) {
+                unsubscribe();
+            }
+
+            // Listen to the list in real-time
+            unsubscribe = db.collection('lists').doc(code).onSnapshot(function(doc) {
+                loadingState.style.display = 'none';
+
+                if (!doc.exists) {
+                    alert('List not found! Check the code and try again.');
+                    showMenu();
+                    return;
+                }
+
+                var data = doc.data();
+                currentTasks = data.tasks || [];
+                listTitleDisplay.textContent = data.title || 'Untitled List';
+                listCodeText.textContent = code;
+
+                // Update saved lists with latest title
+                addToSavedLists(code, data.title);
+
+                renderTasks();
+            }, function(error) {
+                loadingState.style.display = 'none';
+                alert('Error loading list: ' + error.message);
+                showMenu();
+            });
+        }
+
+        // ===== JOIN A LIST =====
+        function joinList(code) {
+            db.collection('lists').doc(code).get().then(function(doc) {
+                if (!doc.exists) {
+                    joinListError.textContent = 'No list found with that code!';
+                    joinListError.style.display = 'block';
+                    return;
+                }
+                var data = doc.data();
+                addToSavedLists(code, data.title);
+                joinListModal.classList.remove('visible');
+                joinListCode.value = '';
+                joinListError.style.display = 'none';
+                openList(code);
+            }).catch(function(error) {
+                joinListError.textContent = 'Error: ' + error.message;
+                joinListError.style.display = 'block';
+            });
         }
 
         // ===== RENDER TASKS =====
         function renderTasks() {
             taskList.innerHTML = '';
 
-            if (tasks.length === 0) {
+            if (currentTasks.length === 0) {
                 emptyState.style.display = 'block';
             } else {
                 emptyState.style.display = 'none';
             }
 
-            tasks.forEach(function(task, index) {
-                const li = document.createElement('li');
+            currentTasks.forEach(function(task, index) {
+                var li = document.createElement('li');
                 li.className = 'task-item';
 
-                const checkbox = document.createElement('input');
+                var checkbox = document.createElement('input');
                 checkbox.type = 'checkbox';
                 checkbox.checked = task.done;
                 checkbox.addEventListener('change', function() {
                     toggleTask(index);
                 });
 
-                const text = document.createElement('span');
+                var text = document.createElement('span');
                 text.className = 'task-text' + (task.done ? ' done' : '');
                 text.style.cursor = 'pointer';
                 text.addEventListener('click', function() {
                     toggleTask(index);
                 });
                 if (task.done) {
-                    const inner = document.createElement('span');
+                    var inner = document.createElement('span');
                     inner.className = 'strikethrough';
                     inner.textContent = task.name;
                     text.appendChild(inner);
@@ -507,10 +1061,9 @@
                     text.textContent = task.name;
                 }
 
-                const deleteBtn = document.createElement('button');
+                var deleteBtn = document.createElement('button');
                 deleteBtn.className = 'delete-btn';
                 deleteBtn.textContent = '✕';
-                deleteBtn.title = 'Delete task';
                 deleteBtn.addEventListener('click', function() {
                     deleteTask(index);
                 });
@@ -524,31 +1077,35 @@
             updateCounter();
         }
 
+        // ===== SAVE TASKS TO FIREBASE =====
+        function saveTasksToFirebase() {
+            if (!currentListCode) return;
+            db.collection('lists').doc(currentListCode).update({
+                tasks: currentTasks
+            });
+        }
+
         // ===== ADD TASK =====
         function addTask(name) {
             if (name.trim() === '') return;
-            tasks.push({ name: name.trim(), done: false });
-            saveTasks();
-            renderTasks();
+            currentTasks.push({ name: name.trim(), done: false });
+            saveTasksToFirebase();
             taskInput.value = '';
         }
 
         // ===== DELETE TASK =====
         function deleteTask(index) {
-            tasks.splice(index, 1);
-            saveTasks();
-            renderTasks();
+            currentTasks.splice(index, 1);
+            saveTasksToFirebase();
         }
 
         // ===== TOGGLE TASK =====
-        let confettiTimeout = null;
-
         function toggleTask(index) {
-            tasks[index].done = !tasks[index].done;
-            saveTasks();
-            renderTasks();
+            var wasDone = currentTasks[index].done;
+            currentTasks[index].done = !currentTasks[index].done;
+            saveTasksToFirebase();
 
-            if (tasks[index].done) {
+            if (currentTasks[index].done) {
                 showRemark('congrats');
                 triggerCelebration();
             } else {
@@ -556,39 +1113,61 @@
             }
         }
 
+        // ===== UPDATE COUNTER =====
+        function updateCounter() {
+            var total = currentTasks.length;
+            var done = currentTasks.filter(function(t) { return t.done; }).length;
+            taskCounter.textContent = done + ' / ' + total + ' tasks finished';
+        }
+
+        // ===== SHOW REMARK =====
+        function showRemark(type) {
+            if (remarkTimeout) {
+                clearTimeout(remarkTimeout);
+            }
+
+            if (type === 'congrats') {
+                var msg = congratsRemarks[Math.floor(Math.random() * congratsRemarks.length)];
+                remarkImg.src = narutoImg;
+                remarkImg.alt = 'Naruto';
+                remarkText.textContent = msg;
+            } else {
+                var msg = encourageRemarks[Math.floor(Math.random() * encourageRemarks.length)];
+                remarkImg.src = itachiImg;
+                remarkImg.alt = 'Itachi';
+                remarkText.textContent = msg;
+            }
+
+            remarkPopup.classList.add('visible');
+
+            remarkTimeout = setTimeout(function() {
+                remarkPopup.classList.remove('visible');
+            }, 5000);
+        }
+
         // ===== CELEBRATION (confetti + shake) =====
         function triggerCelebration() {
-            const photo = document.getElementById('profilePhoto');
-            const wrapper = document.getElementById('profileWrapper');
+            var photo = document.getElementById('profilePhoto');
+            var wrapper = document.getElementById('profileWrapper');
 
-            // Shake the photo
             photo.classList.remove('shake');
-            // This tiny delay forces the browser to restart the animation
             setTimeout(function() { photo.classList.add('shake'); }, 10);
 
-            // Clear old confetti timeout
             if (confettiTimeout) clearTimeout(confettiTimeout);
 
-            // Create confetti pieces
             var colors = ['#1b2a4a', '#1a2744', '#2c3e6b', '#c0392b', '#e74c3c', '#d44035'];
             for (var i = 0; i < 30; i++) {
                 var piece = document.createElement('div');
                 piece.className = 'confetti-piece';
-
-                // Random color
                 piece.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
 
-                // Random shape (some squares, some rectangles)
                 var size = 6 + Math.random() * 6;
                 piece.style.width = size + 'px';
                 piece.style.height = (Math.random() > 0.5 ? size : size * 0.5) + 'px';
                 piece.style.borderRadius = (Math.random() > 0.5 ? '2px' : '0');
-
-                // Start from center of the photo
                 piece.style.left = '50%';
                 piece.style.top = '50%';
 
-                // Random direction to fly out
                 var angle = Math.random() * Math.PI * 2;
                 var distance = 80 + Math.random() * 120;
                 var xEnd = Math.cos(angle) * distance;
@@ -606,7 +1185,6 @@
                 wrapper.appendChild(piece);
             }
 
-            // Clean up confetti after 5 seconds
             confettiTimeout = setTimeout(function() {
                 var pieces = wrapper.querySelectorAll('.confetti-piece');
                 pieces.forEach(function(p) { p.remove(); });
@@ -614,62 +1192,83 @@
             }, 5000);
         }
 
-        // ===== UPDATE COUNTER =====
-        function updateCounter() {
-            const total = tasks.length;
-            const done = tasks.filter(function(t) { return t.done; }).length;
-            taskCounter.textContent = done + ' / ' + total + ' tasks finished';
-        }
-
-        // ===== SHOW REMARK =====
-        function showRemark(type) {
-            // Clear any existing timeout
-            if (remarkTimeout) {
-                clearTimeout(remarkTimeout);
-            }
-
-            if (type === 'congrats') {
-                const msg = congratsRemarks[Math.floor(Math.random() * congratsRemarks.length)];
-                remarkImg.src = narutoImg;
-                remarkImg.alt = 'Naruto';
-                remarkText.textContent = msg;
-            } else {
-                const msg = encourageRemarks[Math.floor(Math.random() * encourageRemarks.length)];
-                remarkImg.src = itachiImg;
-                remarkImg.alt = 'Itachi';
-                remarkText.textContent = msg;
-            }
-
-            remarkPopup.classList.add('visible');
-
-            // Disappear after 5 seconds
-            remarkTimeout = setTimeout(function() {
-                remarkPopup.classList.remove('visible');
-            }, 5000);
-        }
-
         // ===== DATE & TIME =====
         function updateDateTime() {
-            const now = new Date();
-
-            // Time
-            let hours = now.getHours();
-            const minutes = String(now.getMinutes()).padStart(2, '0');
-            const ampm = hours >= 12 ? 'PM' : 'AM';
+            var now = new Date();
+            var hours = now.getHours();
+            var minutes = String(now.getMinutes()).padStart(2, '0');
+            var ampm = hours >= 12 ? 'PM' : 'AM';
             hours = hours % 12;
             if (hours === 0) hours = 12;
             document.getElementById('timeDisplay').textContent = hours + ':' + minutes + ' ' + ampm;
 
-            // Date
-            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
             document.getElementById('dateDisplay').textContent = now.toLocaleDateString('en-US', options);
         }
 
-        // Update time every second
         updateDateTime();
         setInterval(updateDateTime, 1000);
 
         // ===== EVENT LISTENERS =====
+
+        // New List button
+        newListBtn.addEventListener('click', function() {
+            if (newListBtn.disabled) return;
+            newListModal.classList.add('visible');
+            newListTitle.value = '';
+            newListError.style.display = 'none';
+            newListTitle.focus();
+        });
+
+        newListCancel.addEventListener('click', function() {
+            newListModal.classList.remove('visible');
+        });
+
+        newListConfirm.addEventListener('click', function() {
+            var title = newListTitle.value.trim();
+            if (!title) {
+                newListError.textContent = 'Please enter a title!';
+                newListError.style.display = 'block';
+                return;
+            }
+            newListModal.classList.remove('visible');
+            createNewList(title);
+        });
+
+        newListTitle.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') newListConfirm.click();
+        });
+
+        // Join List button
+        joinListBtn.addEventListener('click', function() {
+            joinListModal.classList.add('visible');
+            joinListCode.value = '';
+            joinListError.style.display = 'none';
+            joinListCode.focus();
+        });
+
+        joinListCancel.addEventListener('click', function() {
+            joinListModal.classList.remove('visible');
+        });
+
+        joinListConfirm.addEventListener('click', function() {
+            var code = joinListCode.value.trim();
+            if (code.length !== 8) {
+                joinListError.textContent = 'Code must be exactly 8 characters!';
+                joinListError.style.display = 'block';
+                return;
+            }
+            joinList(code);
+        });
+
+        joinListCode.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') joinListConfirm.click();
+        });
+
+        // Back button
+        backBtn.addEventListener('click', function() {
+            showMenu();
+        });
 
         // + button toggles the input field
         addBtn.addEventListener('click', function() {
@@ -686,8 +1285,49 @@
             }
         });
 
+        // Click list title to rename
+        listTitleDisplay.addEventListener('click', function() {
+            renameListTitleInput.value = listTitleDisplay.textContent;
+            renameListModal.classList.add('visible');
+            renameListTitleInput.focus();
+        });
+
+        renameListCancel.addEventListener('click', function() {
+            renameListModal.classList.remove('visible');
+        });
+
+        renameListConfirm.addEventListener('click', function() {
+            var newTitle = renameListTitleInput.value.trim();
+            if (!newTitle) return;
+            db.collection('lists').doc(currentListCode).update({ title: newTitle });
+            renameListModal.classList.remove('visible');
+        });
+
+        renameListTitleInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') renameListConfirm.click();
+        });
+
+        // Click code to copy
+        listCodeDisplay.addEventListener('click', function() {
+            navigator.clipboard.writeText(currentListCode).then(function() {
+                copiedMsg.style.display = 'inline';
+                setTimeout(function() {
+                    copiedMsg.style.display = 'none';
+                }, 2000);
+            });
+        });
+
+        // Close modals by clicking overlay
+        document.querySelectorAll('.modal-overlay').forEach(function(overlay) {
+            overlay.addEventListener('click', function(e) {
+                if (e.target === overlay) {
+                    overlay.classList.remove('visible');
+                }
+            });
+        });
+
         // ===== INITIALIZE =====
-        renderTasks();
+        renderMenu();
     </script>
 </body>
 </html>
