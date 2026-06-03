@@ -6,6 +6,53 @@
     <title>To-Do List</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&display=swap">
     <style>
+        /* ===== CSS VARIABLES FOR THEMING ===== */
+        :root {
+            --bg: #f5f0e8;
+            --card: #fffdf8;
+            --card-hover: #faf6ef;
+            --text: #4a4340;
+            --text-muted: #7a7068;
+            --text-faint: #9a928a;
+            --text-done: #b0a89e;
+            --border: #ddd5c8;
+            --input-bg: #f5f0e8;
+            --bar-bg: #ece6db;
+            --counter-bg: #fffdf8;
+            --accent: #4a9e8e;
+            --accent-hover: #3d8577;
+            --danger: #c0392b;
+            --danger-light: #fde8e8;
+            --danger-text: #c9847a;
+            --danger-border: rgba(192, 57, 43, 0.4);
+            --danger-bg: rgba(192, 57, 43, 0.08);
+            --modal-overlay: rgba(0,0,0,0.4);
+            --shadow: rgba(0,0,0,0.12);
+        }
+
+        [data-theme="dark"] {
+            --bg: #1a1a2e;
+            --card: #25253e;
+            --card-hover: #2d2d4a;
+            --text: #e0ddd5;
+            --text-muted: #9a96a6;
+            --text-faint: #6e6a7a;
+            --text-done: #5a5868;
+            --border: #3a3a52;
+            --input-bg: #20203a;
+            --bar-bg: #1e1e34;
+            --counter-bg: #25253e;
+            --accent: #4a9e8e;
+            --accent-hover: #3d8577;
+            --danger: #e74c3c;
+            --danger-light: #3a2020;
+            --danger-text: #e07a6e;
+            --danger-border: rgba(231, 76, 60, 0.5);
+            --danger-bg: rgba(231, 76, 60, 0.15);
+            --modal-overlay: rgba(0,0,0,0.6);
+            --shadow: rgba(0,0,0,0.3);
+        }
+
         /* ===== GLOBAL STYLES ===== */
         * {
             margin: 0;
@@ -15,11 +62,79 @@
         }
 
         body {
-            background-color: #f5f0e8;
+            background-color: var(--bg);
+            color: var(--text);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        /* ===== TOP LEFT BAR (back + theme toggle) ===== */
+        .top-left-bar {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            z-index: 300;
+        }
+
+        .theme-toggle {
+            background: none;
+            border: 2px solid var(--border);
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            font-size: 18px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--card);
+            transition: all 0.3s ease;
+            line-height: 1;
+            padding: 0;
+            text-align: center;
+        }
+
+        .theme-toggle:hover {
+            border-color: var(--accent);
+        }
+
+
+        /* ===== SETTINGS BUTTON (centered in bottom bar) ===== */
+        .settings-toggle {
+            position: fixed;
+            bottom: 12px;
+            left: 20px;
+            background: none;
+            border: 2px solid var(--border);
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            font-size: 18px;
+            cursor: pointer;
+            z-index: 300;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--card);
+            transition: all 0.3s ease;
+            line-height: 1;
+            padding: 0;
+            text-align: center;
+        }
+
+        [data-theme="dark"] .settings-toggle {
+            border-color: #5a5a72;
+            background-color: #35354f;
+        }
+
+        .settings-toggle:hover {
+            border-color: var(--accent);
         }
 
         /* ===== MENU SCREEN ===== */
@@ -34,7 +149,7 @@
         }
 
         .menu-screen h1 {
-            color: #4a4340;
+            color: var(--text);
             font-size: 32px;
             margin-bottom: 30px;
         }
@@ -51,27 +166,23 @@
             padding: 14px 20px;
             font-size: 16px;
             font-family: 'Comic Sans MS', 'Comic Neue', 'Comic Sans', cursive;
-            border: 2px solid #ddd5c8;
+            border: 2px solid var(--border);
             border-radius: 12px;
-            background-color: #fffdf8;
-            color: #4a4340;
+            background-color: var(--card);
+            color: var(--text);
             cursor: pointer;
             transition: background-color 0.2s ease;
         }
 
-        .menu-btn:hover {
-            background-color: #faf6ef;
-        }
+        .menu-btn:hover { background-color: var(--card-hover); }
 
         .menu-btn.primary {
-            background-color: #e8943a;
+            background-color: var(--accent);
             color: white;
-            border-color: #e8943a;
+            border-color: var(--accent);
         }
 
-        .menu-btn.primary:hover {
-            background-color: #d4832e;
-        }
+        .menu-btn.primary:hover { background-color: var(--accent-hover); }
 
         /* Saved list buttons */
         .saved-lists {
@@ -87,10 +198,10 @@
             padding: 16px 20px;
             font-size: 16px;
             font-family: 'Comic Sans MS', 'Comic Neue', 'Comic Sans', cursive;
-            border: 2px solid #ddd5c8;
+            border: 2px solid var(--border);
             border-radius: 12px;
-            background-color: #fffdf8;
-            color: #4a4340;
+            background-color: var(--card);
+            color: var(--text);
             cursor: pointer;
             text-align: left;
             transition: background-color 0.2s ease;
@@ -99,555 +210,285 @@
             align-items: center;
         }
 
-        .saved-list-btn:hover {
-            background-color: #faf6ef;
-        }
+        .saved-list-btn:hover { background-color: var(--card-hover); }
+        .saved-list-btn .list-title { font-weight: bold; }
+        .saved-list-btn .list-code { font-size: 13px; color: var(--text-faint); }
+        .saved-list-btn .list-info { display: flex; flex-direction: column; gap: 2px; flex: 1; }
 
-        .saved-list-btn .list-title {
-            font-weight: bold;
+        .saved-list-delete {
+            background: none; border: none; font-size: 16px;
+            color: var(--danger-text); cursor: pointer; padding: 4px 8px;
+            border-radius: 6px; opacity: 0; transition: all 0.15s ease;
         }
+        .saved-list-btn:hover .saved-list-delete { opacity: 1; }
+        .saved-list-delete:hover { background-color: var(--danger-light); color: var(--danger); }
 
-        .saved-list-btn .list-code {
-            font-size: 13px;
-            color: #9a928a;
+        /* Delete modal options */
+        .delete-options { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
+
+        .delete-option-btn {
+            padding: 12px 16px; font-size: 14px;
+            font-family: 'Comic Sans MS', 'Comic Neue', 'Comic Sans', cursive;
+            border: 2px solid var(--border); border-radius: 10px;
+            background-color: var(--input-bg); color: var(--text);
+            cursor: pointer; text-align: left; transition: all 0.15s ease;
         }
+        .delete-option-btn:hover { border-color: var(--danger); background-color: var(--danger-light); }
+        .delete-option-btn.danger { border-color: var(--danger); color: var(--danger); }
+        .delete-option-btn.danger:hover { background-color: var(--danger); color: white; }
 
-        .premium-msg {
-            color: #b0a89e;
-            font-size: 14px;
-            text-align: center;
-            margin-top: 10px;
-            font-style: italic;
-        }
+        .premium-msg { color: var(--text-done); font-size: 14px; text-align: center; margin-top: 10px; font-style: italic; }
+        .premium-msg span { color: var(--accent); }
 
-        .premium-msg span {
-            color: #e8943a;
-        }
-
-        /* Modal overlay for prompts */
+        /* ===== MODAL ===== */
         .modal-overlay {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background-color: rgba(0,0,0,0.4);
-            z-index: 200;
-            justify-content: center;
-            align-items: center;
+            display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background-color: var(--modal-overlay); z-index: 200;
+            justify-content: center; align-items: center;
         }
-
-        .modal-overlay.visible {
-            display: flex;
-        }
+        .modal-overlay.visible { display: flex; }
 
         .modal-box {
-            background-color: #fffdf8;
-            border-radius: 16px;
-            padding: 30px;
-            width: 90%;
-            max-width: 400px;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+            background-color: var(--card); border-radius: 16px; padding: 30px;
+            width: 90%; max-width: 400px; box-shadow: 0 8px 30px var(--shadow);
         }
+        .modal-box h2 { color: var(--text); font-size: 20px; margin-bottom: 16px; }
 
-        .modal-box h2 {
-            color: #4a4340;
-            font-size: 20px;
-            margin-bottom: 16px;
-        }
-
-        .modal-box input {
-            width: 100%;
-            padding: 12px 16px;
-            font-size: 16px;
+        .modal-box input, .modal-box select {
+            width: 100%; padding: 12px 16px; font-size: 16px;
             font-family: 'Comic Sans MS', 'Comic Neue', 'Comic Sans', cursive;
-            border: 2px solid #ddd5c8;
-            border-radius: 10px;
-            background-color: #f5f0e8;
-            color: #4a4340;
-            outline: none;
-            margin-bottom: 16px;
+            border: 2px solid var(--border); border-radius: 10px;
+            background-color: var(--input-bg); color: var(--text);
+            outline: none; margin-bottom: 16px;
         }
-
-        .modal-box input:focus {
-            border-color: #e8943a;
+        .modal-box select {
+            appearance: none;
+            -webkit-appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%239a96a6' stroke-width='2' fill='none'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 16px center;
+            padding-right: 40px;
         }
+        .modal-box input:focus, .modal-box select:focus { border-color: var(--accent); }
+        .modal-box input::placeholder { color: var(--text-done); }
 
-        .modal-box input::placeholder {
-            color: #c0b8ae;
-        }
-
-        .modal-actions {
-            display: flex;
-            gap: 10px;
-            justify-content: flex-end;
-        }
-
+        .modal-actions { display: flex; gap: 10px; justify-content: flex-end; }
         .modal-actions button {
-            padding: 10px 20px;
-            font-size: 14px;
+            padding: 10px 20px; font-size: 14px;
             font-family: 'Comic Sans MS', 'Comic Neue', 'Comic Sans', cursive;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
+            border: none; border-radius: 8px; cursor: pointer;
         }
-
-        .modal-actions .cancel-btn {
-            background-color: #ece6db;
-            color: #7a7068;
-        }
-
-        .modal-actions .confirm-btn {
-            background-color: #e8943a;
-            color: white;
-        }
-
-        .modal-error {
-            color: #c0392b;
-            font-size: 13px;
-            margin-bottom: 10px;
-            display: none;
-        }
+        .modal-actions .cancel-btn { background-color: var(--bar-bg); color: var(--text-muted); }
+        .modal-actions .confirm-btn { background-color: var(--accent); color: white; }
+        .modal-error { color: var(--danger); font-size: 13px; margin-bottom: 10px; display: none; }
 
         /* ===== TODO SCREEN ===== */
         .todo-screen {
-            display: none;
-            flex-direction: column;
-            align-items: center;
-            padding: 40px 20px 120px 20px;
-            width: 100%;
+            display: none; flex-direction: column; align-items: center;
+            padding: 40px 20px 120px 20px; width: 100%;
         }
+        .todo-screen.visible { display: flex; }
 
-        .todo-screen.visible {
-            display: flex;
-        }
-
-        /* Back button */
         .back-btn {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            background: none;
-            border: none;
-            font-size: 24px;
-            color: #7a7068;
-            cursor: pointer;
+            background: none; border: none; font-size: 24px;
+            color: var(--text-muted); cursor: pointer;
             font-family: 'Comic Sans MS', 'Comic Neue', 'Comic Sans', cursive;
-            z-index: 50;
         }
+        .back-btn:hover { color: var(--text); }
 
-        .back-btn:hover {
-            color: #4a4340;
-        }
-
-        /* List title (editable) */
-        .list-title-header {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 4px;
-        }
-
+        /* List title */
+        .list-title-header { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
         .list-title-display {
-            font-size: 28px;
-            color: #4a4340;
-            font-weight: bold;
-            cursor: pointer;
-            border-bottom: 2px dashed transparent;
+            font-size: 28px; color: var(--text); font-weight: bold;
+            cursor: pointer; border-bottom: 2px dashed transparent;
         }
+        .list-title-display:hover { border-bottom-color: var(--border); }
 
-        .list-title-display:hover {
-            border-bottom-color: #ddd5c8;
-        }
+        .list-code-display { font-size: 13px; color: var(--text-faint); margin-bottom: 24px; cursor: pointer; }
+        .list-code-display:hover { color: var(--text-muted); }
+        .copied-msg { color: var(--accent); font-size: 12px; margin-left: 6px; display: none; }
 
-        .list-code-display {
-            font-size: 13px;
-            color: #9a928a;
-            margin-bottom: 24px;
-            cursor: pointer;
-        }
-
-        .list-code-display:hover {
-            color: #7a7068;
-        }
-
-        .copied-msg {
-            color: #e8943a;
-            font-size: 12px;
-            margin-left: 6px;
-            display: none;
-        }
-
-        /* ===== DATE & TIME (top right) ===== */
+        /* Date & time */
         .datetime {
-            position: fixed;
-            top: 20px;
-            right: 30px;
-            text-align: right;
-            color: #7a7068;
-            font-size: 14px;
-            z-index: 50;
+            position: fixed; top: 20px; right: 30px; text-align: right;
+            color: var(--text-muted); font-size: 14px; z-index: 50;
         }
+        .datetime .time { font-size: 28px; font-weight: bold; color: var(--text); }
 
-        .datetime .time {
-            font-size: 28px;
-            font-weight: bold;
-            color: #4a4340;
-        }
-
-        /* ===== MAIN CONTAINER ===== */
-        .container {
-            width: 100%;
-            max-width: 550px;
-            margin-top: 10px;
-        }
+        .container { width: 100%; max-width: 550px; margin-top: 10px; }
 
         /* ===== TASK LIST ===== */
-        .task-list {
-            list-style: none;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
+        .task-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
 
         .task-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 14px 16px;
-            background-color: #fffdf8;
-            border-radius: 10px;
-            transition: all 0.2s ease;
-            position: relative;
+            display: flex; align-items: center; gap: 12px; padding: 14px 16px;
+            background-color: var(--card); border-radius: 10px;
+            transition: all 0.2s ease; position: relative;
         }
-
-        .task-item:hover {
-            background-color: #faf6ef;
-        }
+        .task-item:hover { background-color: var(--card-hover); }
+        .task-item.impending { border: 2px solid var(--danger-border); }
+        .task-item.overdue { background-color: var(--danger-bg); border: 2px solid var(--danger); }
 
         .task-item input[type="checkbox"] {
-            width: 20px;
-            height: 20px;
-            cursor: pointer;
-            accent-color: #e8943a;
-            flex-shrink: 0;
+            width: 20px; height: 20px; cursor: pointer;
+            accent-color: var(--accent); flex-shrink: 0;
         }
 
-        .task-item .task-text {
-            flex: 1;
-            font-size: 16px;
-            color: #4a4340;
-            word-break: break-word;
-        }
+        .task-item .task-text { flex: 1; font-size: 16px; color: var(--text); word-break: break-word; }
+        .task-item .task-text.done { color: var(--text-done); }
 
-        .task-item .task-text.done {
-            color: #b0a89e;
-        }
-
-        .task-item .task-text.done .strikethrough {
-            position: relative;
-        }
-
+        .task-item .task-text.done .strikethrough { position: relative; }
         .task-item .task-text.done .strikethrough::after {
-            content: '';
-            position: absolute;
-            left: 0;
-            right: 0;
-            top: 50%;
-            height: 2px;
-            background-color: #b0a89e;
+            content: ''; position: absolute; left: 0; right: 0; top: 50%;
+            height: 2px; background-color: var(--text-done);
         }
 
-        /* Delete button - hidden until hover */
-        .task-item .delete-btn {
-            display: none;
-            background: none;
-            border: none;
-            font-size: 18px;
-            color: #c9847a;
-            cursor: pointer;
-            padding: 4px 8px;
-            border-radius: 6px;
+        .task-item .task-due {
+            font-size: 11px; color: var(--text-faint); margin-top: 2px;
+        }
+        .task-item .task-due.overdue-text { color: var(--danger); font-weight: bold; }
+
+        /* Drag handle */
+        .drag-handle {
+            cursor: grab; color: var(--text-done); font-size: 16px;
+            padding: 0 4px; user-select: none; flex-shrink: 0;
+        }
+        .drag-handle:active { cursor: grabbing; }
+
+        .task-item.dragging { opacity: 0.4; }
+        .task-item.drag-over { border-top: 3px solid var(--accent); }
+
+        /* Task action buttons */
+        .task-actions { display: flex; gap: 4px; align-items: center; }
+
+        .task-item .delete-btn, .task-item .due-btn {
+            display: none; background: none; border: none; font-size: 16px;
+            cursor: pointer; padding: 4px 6px; border-radius: 6px;
             transition: all 0.15s ease;
         }
+        .task-item .delete-btn { color: var(--danger-text); }
+        .task-item .delete-btn:hover { background-color: var(--danger-light); color: var(--danger); }
+        .task-item .due-btn { color: var(--text-faint); }
+        .task-item .due-btn:hover { color: var(--accent); }
+        .task-item:hover .delete-btn, .task-item:hover .due-btn { display: block; }
 
-        .task-item .delete-btn:hover {
-            background-color: #f0d0cc;
-            color: #a14a3e;
-        }
-
-        .task-item:hover .delete-btn {
-            display: block;
-        }
-
-        /* ===== ADD TASK AREA ===== */
+        /* ===== ADD TASK ===== */
         .add-task-btn {
-            position: fixed;
-            right: 30px;
-            top: 0;
-            bottom: 0;
-            margin: auto;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            border: none;
-            background-color: #e8943a;
-            color: white;
-            font-size: 28px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            position: fixed; right: 30px; top: 0; bottom: 0; margin: auto;
+            width: 50px; height: 50px; border-radius: 50%; border: none;
+            background-color: var(--accent); color: white; font-size: 28px;
+            cursor: pointer; display: flex; align-items: center; justify-content: center;
             transition: background-color 0.2s ease;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            box-shadow: 0 2px 8px var(--shadow);
         }
+        .add-task-btn:hover { background-color: var(--accent-hover); }
 
-        .add-task-btn:hover {
-            background-color: #d4832e;
-        }
-
-        /* Input field that appears when you click + */
-        .add-task-input-area {
-            display: none;
-            margin-top: 16px;
-            gap: 8px;
-            align-items: center;
-        }
-
-        .add-task-input-area.visible {
-            display: flex;
-        }
-
+        .add-task-input-area { display: none; margin-top: 16px; gap: 8px; align-items: center; }
+        .add-task-input-area.visible { display: flex; }
         .add-task-input-area input {
-            flex: 1;
-            padding: 12px 16px;
-            font-size: 16px;
+            flex: 1; padding: 12px 16px; font-size: 16px;
             font-family: 'Comic Sans MS', 'Comic Neue', 'Comic Sans', cursive;
-            border: 2px solid #ddd5c8;
-            border-radius: 10px;
-            background-color: #fffdf8;
-            color: #4a4340;
-            outline: none;
+            border: 2px solid var(--border); border-radius: 10px;
+            background-color: var(--card); color: var(--text); outline: none;
             transition: border-color 0.2s ease;
         }
+        .add-task-input-area input:focus { border-color: var(--accent); }
+        .add-task-input-area input::placeholder { color: var(--text-done); }
 
-        .add-task-input-area input:focus {
-            border-color: #e8943a;
-        }
-
-        .add-task-input-area input::placeholder {
-            color: #c0b8ae;
-        }
-
-        /* ===== BOTTOM BAR (task counter + remarks) ===== */
+        /* ===== BOTTOM BAR ===== */
         .bottom-bar {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background-color: #ece6db;
-            padding: 14px 24px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 16px;
-            min-height: 60px;
+            position: fixed; bottom: 0; left: 0; right: 0;
+            background-color: var(--bar-bg); padding: 14px 24px;
+            display: flex; align-items: center; justify-content: center;
+            gap: 16px; min-height: 60px;
         }
-
         .task-counter {
-            font-size: 14px;
-            color: #7a7068;
-            background-color: #fffdf8;
-            padding: 6px 14px;
-            border-radius: 8px;
+            font-size: 14px; color: var(--text-muted);
+            background-color: var(--counter-bg); padding: 6px 14px; border-radius: 8px;
         }
 
         /* ===== REMARK POPUP ===== */
         .remark-popup {
-            position: fixed;
-            bottom: 80px;
-            left: 50%;
-            transform: translateX(-50%);
-            display: none;
-            align-items: center;
-            gap: 14px;
-            background-color: #fffdf8;
-            padding: 14px 22px;
-            border-radius: 14px;
-            box-shadow: 0 4px 16px rgba(0,0,0,0.12);
-            animation: popIn 0.3s ease;
-            z-index: 100;
+            position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%);
+            display: none; align-items: center; gap: 14px;
+            background-color: var(--card); padding: 14px 22px; border-radius: 14px;
+            box-shadow: 0 4px 16px var(--shadow); animation: popIn 0.3s ease; z-index: 100;
         }
-
-        .remark-popup.visible {
-            display: flex;
-        }
-
-        .remark-popup img {
-            width: 55px;
-            height: 55px;
-            border-radius: 50%;
-            object-fit: cover;
-        }
-
-        .remark-popup .remark-text {
-            font-size: 15px;
-            color: #4a4340;
-            max-width: 280px;
-        }
+        .remark-popup.visible { display: flex; }
+        .remark-popup img { width: 55px; height: 55px; border-radius: 50%; object-fit: cover; }
+        .remark-popup .remark-text { font-size: 15px; color: var(--text); max-width: 280px; }
 
         @keyframes popIn {
             0% { opacity: 0; transform: translateX(-50%) translateY(20px); }
             100% { opacity: 1; transform: translateX(-50%) translateY(0); }
         }
 
-        /* ===== EMPTY STATE ===== */
-        .empty-state {
-            text-align: center;
-            color: #b0a89e;
-            font-size: 16px;
-            margin-top: 60px;
-        }
+        .empty-state { text-align: center; color: var(--text-done); font-size: 16px; margin-top: 60px; }
 
-        /* ===== PROFILE PHOTO (left side) ===== */
+        /* ===== PROFILE PHOTO ===== */
         .profile-area {
-            position: fixed;
-            left: 10px;
-            top: 50%;
-            transform: translateY(-50%);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            position: fixed; left: 12%; top: 50%; transform: translateY(-50%);
+            display: flex; flex-direction: column; align-items: center;
         }
-
-        .profile-photo-wrapper {
-            position: relative;
-            height: 50vh;
-        }
-
-        .profile-photo {
-            height: 50vh;
-            width: auto;
-            object-fit: contain;
-            transition: transform 0.1s ease;
-        }
-
-        .profile-photo.shake {
-            animation: shakeIt 0.4s ease 3;
-        }
+        .profile-photo-wrapper { position: relative; height: 50vh; }
+        .profile-photo { height: 50vh; width: auto; object-fit: contain; transition: transform 0.1s ease, filter 0.3s ease; }
+        [data-theme="dark"] .profile-photo { filter: brightness(0.7) saturate(0.85); }
+        .profile-photo.shake { animation: shakeIt 0.4s ease 3; }
 
         @keyframes shakeIt {
-            0% { transform: rotate(0deg); }
-            25% { transform: rotate(6deg); }
-            50% { transform: rotate(-6deg); }
-            75% { transform: rotate(4deg); }
+            0% { transform: rotate(0deg); } 25% { transform: rotate(6deg); }
+            50% { transform: rotate(-6deg); } 75% { transform: rotate(4deg); }
             100% { transform: rotate(0deg); }
         }
 
-        /* ===== CONFETTI ===== */
-        .confetti-piece {
-            position: absolute;
-            width: 8px;
-            height: 8px;
-            opacity: 1;
-            pointer-events: none;
-        }
-
+        .confetti-piece { position: absolute; width: 8px; height: 8px; opacity: 1; pointer-events: none; }
         @keyframes confettiFall {
-            0% {
-                opacity: 1;
-                transform: translate(0, 0) rotate(0deg) scale(1);
-            }
-            100% {
-                opacity: 0;
-                transform: translate(var(--x), var(--y)) rotate(var(--r)) scale(0.3);
-            }
+            0% { opacity: 1; transform: translate(0,0) rotate(0deg) scale(1); }
+            100% { opacity: 0; transform: translate(var(--x),var(--y)) rotate(var(--r)) scale(0.3); }
         }
 
-        /* ===== LOADING SPINNER ===== */
-        .loading {
-            color: #b0a89e;
-            font-size: 16px;
-            text-align: center;
-            margin-top: 40px;
-        }
+        .loading { color: var(--text-done); font-size: 16px; text-align: center; margin-top: 40px; }
 
-        /* ===== MOBILE STYLES ===== */
+        /* ===== SETTINGS MODAL ===== */
+        .settings-label { color: var(--text-muted); font-size: 14px; margin-bottom: 6px; }
+
+        /* ===== MOBILE ===== */
         @media (max-width: 768px) {
-            .todo-screen {
-                padding: 20px 16px 120px 16px;
-            }
-
-            .datetime {
-                position: static;
-                text-align: center;
-                margin-bottom: 16px;
-            }
-
-            .datetime .time {
-                font-size: 20px;
-            }
-
-            .list-title-display {
-                font-size: 22px;
-            }
-
-            .profile-area {
-                position: static;
-                transform: none;
-                margin-bottom: 20px;
-            }
-
-            .profile-photo-wrapper {
-                height: auto;
-            }
-
-            .profile-photo {
-                height: auto;
-                width: 120px;
-                border-radius: 12px;
-            }
-
-            .add-task-btn {
-                position: fixed;
-                right: 16px;
-                bottom: 75px;
-                top: auto;
-                margin: 0;
-            }
-
-            .container {
-                margin-top: 10px;
-                max-width: 100%;
-            }
-
-            .back-btn {
-                position: static;
-                margin-bottom: 10px;
-                align-self: flex-start;
-            }
+            .todo-screen { padding: 20px 16px 120px 16px; }
+            .datetime { position: static; text-align: center; margin-bottom: 16px; }
+            .datetime .time { font-size: 20px; }
+            .list-title-display { font-size: 22px; }
+            .profile-area { position: static; transform: none; margin-bottom: 20px; }
+            .profile-photo-wrapper { height: auto; }
+            .profile-photo { height: auto; width: 120px; border-radius: 12px; }
+            .add-task-btn { position: fixed; right: 16px; bottom: 75px; top: auto; margin: 0; }
+            .container { margin-top: 10px; max-width: 100%; }
+            .top-left-bar { position: static; margin-bottom: 10px; align-self: flex-start; }
+            .theme-toggle { width: 32px; height: 32px; font-size: 14px; }
+            .settings-toggle { bottom: 8px; left: 10px; width: 32px; height: 32px; font-size: 14px; }
         }
     </style>
 </head>
 <body>
 
+    <!-- SETTINGS BUTTON (always visible, bottom left) -->
+    <button class="settings-toggle" id="settingsToggle" title="Settings">⚙️</button>
+
     <!-- ==================== MENU SCREEN ==================== -->
     <div class="menu-screen" id="menuScreen">
         <h1>To-Do List</h1>
-
         <div class="menu-buttons">
             <button class="menu-btn primary" id="newListBtn">+ New List</button>
             <button class="menu-btn" id="joinListBtn">Join List</button>
         </div>
-
-        <div class="saved-lists" id="savedLists">
-            <!-- Saved list buttons go here -->
-        </div>
+        <div class="saved-lists" id="savedLists"></div>
     </div>
 
     <!-- New List Modal -->
     <div class="modal-overlay" id="newListModal">
         <div class="modal-box">
             <h2>What do you want to title your list?</h2>
-            <input type="text" id="newListTitle" placeholder="e.g. Katelyn's Chores" maxlength="40" />
+            <input type="text" id="newListTitle" placeholder="e.g. Grocery List, Homework, Chores" maxlength="40" />
             <div class="modal-error" id="newListError"></div>
             <div class="modal-actions">
                 <button class="cancel-btn" id="newListCancel">Cancel</button>
@@ -669,6 +510,21 @@
         </div>
     </div>
 
+    <!-- Delete List Modal -->
+    <div class="modal-overlay" id="deleteListModal">
+        <div class="modal-box">
+            <h2>Are you sure?</h2>
+            <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 16px;" id="deleteListName"></p>
+            <div class="delete-options">
+                <button class="delete-option-btn" id="deleteFromDevice">Remove from this device only</button>
+                <button class="delete-option-btn danger" id="deleteForEveryone">Delete list for everyone</button>
+            </div>
+            <div class="modal-actions">
+                <button class="cancel-btn" id="deleteListCancel">Cancel</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Rename List Modal -->
     <div class="modal-overlay" id="renameListModal">
         <div class="modal-box">
@@ -681,26 +537,66 @@
         </div>
     </div>
 
+    <!-- Due Date Modal -->
+    <div class="modal-overlay" id="dueDateModal">
+        <div class="modal-box">
+            <h2>Set due date</h2>
+            <div class="settings-label">Date & Time</div>
+            <input type="datetime-local" id="dueDateInput" />
+            <div class="settings-label">Remind me</div>
+            <select id="dueReminderSelect">
+                <option value="0">No reminder</option>
+                <option value="15">15 minutes before</option>
+                <option value="30">30 minutes before</option>
+                <option value="60" selected>1 hour before</option>
+                <option value="120">2 hours before</option>
+                <option value="1440">1 day before</option>
+            </select>
+            <div class="modal-actions">
+                <button class="cancel-btn" id="dueDateClear">Clear date</button>
+                <button class="cancel-btn" id="dueDateCancel">Cancel</button>
+                <button class="confirm-btn" id="dueDateConfirm">Save</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div class="modal-overlay" id="settingsModal">
+        <div class="modal-box">
+            <h2>⚙️ Settings</h2>
+            <div class="settings-label">Default reminder time</div>
+            <select id="defaultReminderSelect">
+                <option value="0">No reminder</option>
+                <option value="15">15 minutes before</option>
+                <option value="30">30 minutes before</option>
+                <option value="60" selected>1 hour before</option>
+                <option value="120">2 hours before</option>
+                <option value="1440">1 day before</option>
+            </select>
+            <div class="modal-actions">
+                <button class="confirm-btn" id="settingsClose">Done</button>
+            </div>
+        </div>
+    </div>
+
     <!-- ==================== TODO SCREEN ==================== -->
     <div class="todo-screen" id="todoScreen">
+        <div class="top-left-bar" id="topLeftBar">
+            <button class="back-btn" id="backBtn">← Back</button>
+            <button class="theme-toggle" id="themeToggle" title="Toggle dark/light mode">☀️</button>
+        </div>
 
-        <!-- Back button -->
-        <button class="back-btn" id="backBtn">← Back</button>
-
-        <!-- PROFILE PHOTO (left side) -->
         <div class="profile-area">
             <div class="profile-photo-wrapper" id="profileWrapper">
-                <img class="profile-photo" id="profilePhoto" src="images/me.png" alt="Me" />
+                <img class="profile-photo" id="profilePhoto" src="images/eva.png" alt="Eva" />
             </div>
         </div>
 
-        <!-- DATE & TIME -->
         <div class="datetime">
             <div class="time" id="timeDisplay"></div>
             <div id="dateDisplay"></div>
         </div>
 
-        <!-- List title + code -->
         <div class="list-title-header">
             <span class="list-title-display" id="listTitleDisplay" title="Click to rename"></span>
         </div>
@@ -709,33 +605,22 @@
             <span class="copied-msg" id="copiedMsg">Copied!</span>
         </div>
 
-        <!-- MAIN CONTENT -->
         <div class="container">
             <ul class="task-list" id="taskList"></ul>
-
-            <div class="empty-state" id="emptyState">
-                No tasks yet! Hit the + button to add one.
-            </div>
-
-            <div class="loading" id="loadingState" style="display:none;">
-                Loading tasks...
-            </div>
-
+            <div class="empty-state" id="emptyState">No tasks yet! Hit the + button to add one.</div>
+            <div class="loading" id="loadingState" style="display:none;">Loading tasks...</div>
             <div class="add-task-input-area" id="addTaskArea">
                 <input type="text" id="taskInput" placeholder="What do you need to do?" />
             </div>
         </div>
 
-        <!-- + BUTTON -->
         <button class="add-task-btn" id="addBtn" style="font-family: Arial, sans-serif;">+</button>
 
-        <!-- REMARK POPUP -->
         <div class="remark-popup" id="remarkPopup">
             <img id="remarkImg" src="" alt="" />
             <div class="remark-text" id="remarkText"></div>
         </div>
 
-        <!-- BOTTOM BAR -->
         <div class="bottom-bar">
             <div class="task-counter" id="taskCounter">0 / 0 tasks finished</div>
         </div>
@@ -747,23 +632,101 @@
 
     <script>
         // ===== FIREBASE CONFIG =====
-        var firebaseConfig = {
+        firebase.initializeApp({
             apiKey: "AIzaSyBQnPufsqODHB9oigEidv_Q684akkI6jP4",
             authDomain: "todo-app-1e82b.firebaseapp.com",
             projectId: "todo-app-1e82b",
             storageBucket: "todo-app-1e82b.firebasestorage.app",
             messagingSenderId: "354871341876",
             appId: "1:354871341876:web:285e3e1df7db37b6f1eb61"
-        };
-
-        firebase.initializeApp(firebaseConfig);
+        });
         var db = firebase.firestore();
 
-        // ===== IMAGES =====
+        // ===== THEME =====
+        var themeToggle = document.getElementById('themeToggle');
+        var savedTheme = localStorage.getItem('theme') || 'light';
+        applyTheme(savedTheme);
+
+        function applyTheme(theme) {
+            if (theme === 'dark') {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                themeToggle.textContent = '🌙';
+            } else {
+                document.documentElement.removeAttribute('data-theme');
+                themeToggle.textContent = '☀️';
+            }
+            localStorage.setItem('theme', theme);
+        }
+
+        themeToggle.addEventListener('click', function() {
+            var current = localStorage.getItem('theme') || 'light';
+            applyTheme(current === 'light' ? 'dark' : 'light');
+        });
+
+        // ===== SETTINGS =====
+        var defaultReminder = parseInt(localStorage.getItem('defaultReminder') || '60');
+        var defaultReminderSelect = document.getElementById('defaultReminderSelect');
+        defaultReminderSelect.value = String(defaultReminder);
+
+        document.getElementById('settingsToggle').addEventListener('click', function() {
+            document.getElementById('settingsModal').classList.add('visible');
+        });
+
+        document.getElementById('settingsClose').addEventListener('click', function() {
+            defaultReminder = parseInt(defaultReminderSelect.value);
+            localStorage.setItem('defaultReminder', String(defaultReminder));
+            document.getElementById('settingsModal').classList.remove('visible');
+        });
+
+        // ===== NOTIFICATIONS =====
+        var notifiedTasks = {};
+
+        // Request notification permission on first user interaction
+        var notifRequested = false;
+        function requestNotificationPermission() {
+            if (notifRequested) return;
+            if ('Notification' in window && Notification.permission === 'default') {
+                Notification.requestPermission();
+                notifRequested = true;
+            }
+        }
+        document.addEventListener('click', requestNotificationPermission, { once: true });
+
+        function checkDueReminders() {
+            var now = Date.now();
+            currentTasks.forEach(function(task) {
+                if (task.done || !task.dueDate) return;
+                var reminderMin = task.reminder || defaultReminder || 60;
+                if (reminderMin === 0) return;
+                var dueTime = new Date(task.dueDate).getTime();
+                var remindAt = dueTime - (reminderMin * 60 * 1000);
+                var taskKey = currentListCode + '_' + task.name + '_' + task.dueDate;
+
+                // Notify if within reminder window OR if overdue
+                if (now >= remindAt && !notifiedTasks[taskKey]) {
+                    notifiedTasks[taskKey] = true;
+                    if ('Notification' in window && Notification.permission === 'granted') {
+                        var isOverdue = now >= dueTime;
+                        new Notification(isOverdue ? 'Task Overdue!' : 'Task Reminder!', {
+                            body: '"' + task.name + '"' + (isOverdue ? ' is past due!' : ' is due soon!'),
+                            icon: 'images/naruto.jpg'
+                        });
+                    }
+                }
+            });
+        }
+        // Check reminders every 15 seconds and re-render to update overdue/impending styles
+        setInterval(function() {
+            checkDueReminders();
+            if (currentListCode && currentTasks.length > 0) {
+                renderTasks();
+            }
+        }, 15000);
+
+        // ===== IMAGES & REMARKS =====
         var narutoImg = 'images/naruto.jpg';
         var itachiImg = 'images/itachi.jpg';
 
-        // ===== REMARKS =====
         var congratsRemarks = [
             "Believe it! You finished that task, dattebayo!",
             "That's the spirit! One step closer to Hokage!",
@@ -793,43 +756,29 @@
         // ===== STATE =====
         var currentListCode = null;
         var currentTasks = [];
-        var unsubscribe = null; // For real-time listener
+        var unsubscribe = null;
         var remarkTimeout = null;
         var confettiTimeout = null;
+        var dueDateTaskIndex = null;
 
-        // Saved lists stored in localStorage (which lists this device has access to)
-        function getSavedLists() {
-            return JSON.parse(localStorage.getItem('savedLists')) || [];
-        }
-
-        function saveSavedLists(lists) {
-            localStorage.setItem('savedLists', JSON.stringify(lists));
-        }
+        // ===== SAVED LISTS =====
+        function getSavedLists() { return JSON.parse(localStorage.getItem('savedLists')) || []; }
+        function saveSavedLists(lists) { localStorage.setItem('savedLists', JSON.stringify(lists)); }
 
         function addToSavedLists(code, title) {
             var lists = getSavedLists();
-            // Check if already saved
             var exists = false;
             for (var i = 0; i < lists.length; i++) {
-                if (lists[i].code === code) {
-                    lists[i].title = title;
-                    exists = true;
-                    break;
-                }
+                if (lists[i].code === code) { lists[i].title = title; exists = true; break; }
             }
-            if (!exists) {
-                lists.push({ code: code, title: title });
-            }
+            if (!exists) lists.push({ code: code, title: title });
             saveSavedLists(lists);
         }
 
-        // ===== GENERATE 8-CHAR CODE =====
         function generateCode() {
             var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
             var code = '';
-            for (var i = 0; i < 8; i++) {
-                code += chars.charAt(Math.floor(Math.random() * chars.length));
-            }
+            for (var i = 0; i < 8; i++) code += chars.charAt(Math.floor(Math.random() * chars.length));
             return code;
         }
 
@@ -837,33 +786,6 @@
         var menuScreen = document.getElementById('menuScreen');
         var todoScreen = document.getElementById('todoScreen');
         var savedListsDiv = document.getElementById('savedLists');
-
-        var newListBtn = document.getElementById('newListBtn');
-        var joinListBtn = document.getElementById('joinListBtn');
-
-        var newListModal = document.getElementById('newListModal');
-        var newListTitle = document.getElementById('newListTitle');
-        var newListError = document.getElementById('newListError');
-        var newListCancel = document.getElementById('newListCancel');
-        var newListConfirm = document.getElementById('newListConfirm');
-
-        var joinListModal = document.getElementById('joinListModal');
-        var joinListCode = document.getElementById('joinListCode');
-        var joinListError = document.getElementById('joinListError');
-        var joinListCancel = document.getElementById('joinListCancel');
-        var joinListConfirm = document.getElementById('joinListConfirm');
-
-        var renameListModal = document.getElementById('renameListModal');
-        var renameListTitleInput = document.getElementById('renameListTitle');
-        var renameListCancel = document.getElementById('renameListCancel');
-        var renameListConfirm = document.getElementById('renameListConfirm');
-
-        var backBtn = document.getElementById('backBtn');
-        var listTitleDisplay = document.getElementById('listTitleDisplay');
-        var listCodeText = document.getElementById('listCodeText');
-        var listCodeDisplay = document.getElementById('listCodeDisplay');
-        var copiedMsg = document.getElementById('copiedMsg');
-
         var taskList = document.getElementById('taskList');
         var taskInput = document.getElementById('taskInput');
         var addBtn = document.getElementById('addBtn');
@@ -874,6 +796,9 @@
         var remarkPopup = document.getElementById('remarkPopup');
         var remarkImg = document.getElementById('remarkImg');
         var remarkText = document.getElementById('remarkText');
+        var listTitleDisplay = document.getElementById('listTitleDisplay');
+        var listCodeText = document.getElementById('listCodeText');
+        var copiedMsg = document.getElementById('copiedMsg');
 
         // ===== RENDER MENU =====
         function renderMenu() {
@@ -882,9 +807,7 @@
 
             if (lists.length > 0) {
                 var label = document.createElement('div');
-                label.style.color = '#9a928a';
-                label.style.fontSize = '13px';
-                label.style.marginBottom = '6px';
+                label.style.cssText = 'color:var(--text-faint);font-size:13px;margin-bottom:6px;';
                 label.textContent = 'Your lists';
                 savedListsDiv.appendChild(label);
             }
@@ -894,49 +817,52 @@
                     var btn = document.createElement('button');
                     btn.className = 'saved-list-btn';
 
+                    var infoDiv = document.createElement('div');
+                    infoDiv.className = 'list-info';
                     var titleSpan = document.createElement('span');
                     titleSpan.className = 'list-title';
                     titleSpan.textContent = list.title || 'Untitled List';
-
                     var codeSpan = document.createElement('span');
                     codeSpan.className = 'list-code';
                     codeSpan.textContent = list.code;
+                    infoDiv.appendChild(titleSpan);
+                    infoDiv.appendChild(codeSpan);
 
-                    btn.appendChild(titleSpan);
-                    btn.appendChild(codeSpan);
-
-                    btn.addEventListener('click', function() {
-                        openList(list.code);
+                    var delBtn = document.createElement('button');
+                    delBtn.className = 'saved-list-delete';
+                    delBtn.textContent = '✕';
+                    delBtn.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        deleteTargetCode = list.code;
+                        document.getElementById('deleteListName').textContent = '"' + (list.title || 'Untitled List') + '" (' + list.code + ')';
+                        document.getElementById('deleteListModal').classList.add('visible');
                     });
 
+                    btn.appendChild(infoDiv);
+                    btn.appendChild(delBtn);
+                    btn.addEventListener('click', function() { openList(list.code); });
                     savedListsDiv.appendChild(btn);
                 })(lists[i]);
             }
 
-            // Premium message if at max
             if (lists.length >= 5) {
-                newListBtn.disabled = true;
-                newListBtn.style.opacity = '0.5';
-                newListBtn.style.cursor = 'default';
+                document.getElementById('newListBtn').disabled = true;
+                document.getElementById('newListBtn').style.opacity = '0.5';
                 var msg = document.createElement('div');
                 msg.className = 'premium-msg';
                 msg.innerHTML = 'Max 5 lists reached. <span>Get Premium ✨</span> for unlimited lists!';
                 savedListsDiv.appendChild(msg);
             } else {
-                newListBtn.disabled = false;
-                newListBtn.style.opacity = '1';
-                newListBtn.style.cursor = 'pointer';
+                document.getElementById('newListBtn').disabled = false;
+                document.getElementById('newListBtn').style.opacity = '1';
             }
         }
 
-        // ===== SHOW/HIDE SCREENS =====
+        // ===== SCREENS =====
         function showMenu() {
-            // Stop listening to the current list
-            if (unsubscribe) {
-                unsubscribe();
-                unsubscribe = null;
-            }
+            if (unsubscribe) { unsubscribe(); unsubscribe = null; }
             currentListCode = null;
+            localStorage.removeItem('lastOpenList');
             currentTasks = [];
             todoScreen.classList.remove('visible');
             menuScreen.style.display = 'flex';
@@ -948,110 +874,141 @@
             todoScreen.classList.add('visible');
         }
 
-        // ===== CREATE NEW LIST =====
+        // ===== CREATE / OPEN / JOIN =====
         function createNewList(title) {
             var code = generateCode();
-            var listData = {
-                title: title || 'Untitled List',
-                code: code,
-                tasks: [],
+            db.collection('lists').doc(code).set({
+                title: title || 'Untitled List', code: code, tasks: [],
                 createdAt: firebase.firestore.FieldValue.serverTimestamp()
-            };
-
-            db.collection('lists').doc(code).set(listData).then(function() {
-                addToSavedLists(code, listData.title);
+            }).then(function() {
+                addToSavedLists(code, title);
                 openList(code);
-            }).catch(function(error) {
-                alert('Error creating list: ' + error.message);
             });
         }
 
-        // ===== OPEN A LIST =====
         function openList(code) {
             currentListCode = code;
+            localStorage.setItem('lastOpenList', code);
             loadingState.style.display = 'block';
             emptyState.style.display = 'none';
             taskList.innerHTML = '';
             showTodo();
 
-            // Stop any previous listener
-            if (unsubscribe) {
-                unsubscribe();
-            }
+            if (unsubscribe) unsubscribe();
 
-            // Listen to the list in real-time
             unsubscribe = db.collection('lists').doc(code).onSnapshot(function(doc) {
                 loadingState.style.display = 'none';
-
-                if (!doc.exists) {
-                    alert('List not found! Check the code and try again.');
-                    showMenu();
-                    return;
-                }
-
+                if (!doc.exists) { alert('List not found!'); showMenu(); return; }
                 var data = doc.data();
                 currentTasks = data.tasks || [];
                 listTitleDisplay.textContent = data.title || 'Untitled List';
                 listCodeText.textContent = code;
-
-                // Update saved lists with latest title
                 addToSavedLists(code, data.title);
-
                 renderTasks();
-            }, function(error) {
-                loadingState.style.display = 'none';
-                alert('Error loading list: ' + error.message);
-                showMenu();
-            });
+            }, function() { showMenu(); });
         }
 
-        // ===== JOIN A LIST =====
         function joinList(code) {
             db.collection('lists').doc(code).get().then(function(doc) {
                 if (!doc.exists) {
-                    joinListError.textContent = 'No list found with that code!';
-                    joinListError.style.display = 'block';
+                    document.getElementById('joinListError').textContent = 'No list found with that code!';
+                    document.getElementById('joinListError').style.display = 'block';
                     return;
                 }
-                var data = doc.data();
-                addToSavedLists(code, data.title);
-                joinListModal.classList.remove('visible');
-                joinListCode.value = '';
-                joinListError.style.display = 'none';
+                addToSavedLists(code, doc.data().title);
+                document.getElementById('joinListModal').classList.remove('visible');
                 openList(code);
-            }).catch(function(error) {
-                joinListError.textContent = 'Error: ' + error.message;
-                joinListError.style.display = 'block';
+            });
+        }
+
+        // ===== DRAG & DROP =====
+        var dragIndex = null;
+
+        function handleDragStart(e, index) {
+            dragIndex = index;
+            e.target.closest('.task-item').classList.add('dragging');
+            e.dataTransfer.effectAllowed = 'move';
+        }
+
+        function handleDragOver(e, index) {
+            e.preventDefault();
+            var items = taskList.querySelectorAll('.task-item');
+            items.forEach(function(item) { item.classList.remove('drag-over'); });
+            if (index !== dragIndex) {
+                items[index].classList.add('drag-over');
+            }
+        }
+
+        function handleDrop(e, index) {
+            e.preventDefault();
+            if (dragIndex === null || dragIndex === index) return;
+            var moved = currentTasks.splice(dragIndex, 1)[0];
+            currentTasks.splice(index, 0, moved);
+            saveTasksToFirebase();
+            dragIndex = null;
+            taskList.querySelectorAll('.task-item').forEach(function(item) {
+                item.classList.remove('dragging', 'drag-over');
+            });
+        }
+
+        function handleDragEnd() {
+            dragIndex = null;
+            taskList.querySelectorAll('.task-item').forEach(function(item) {
+                item.classList.remove('dragging', 'drag-over');
             });
         }
 
         // ===== RENDER TASKS =====
         function renderTasks() {
             taskList.innerHTML = '';
-
-            if (currentTasks.length === 0) {
-                emptyState.style.display = 'block';
-            } else {
-                emptyState.style.display = 'none';
-            }
+            emptyState.style.display = currentTasks.length === 0 ? 'block' : 'none';
+            var now = new Date();
 
             currentTasks.forEach(function(task, index) {
                 var li = document.createElement('li');
                 li.className = 'task-item';
+                li.draggable = true;
+
+                // Check if overdue or impending
+                var isOverdue = false;
+                var isImpending = false;
+                if (task.dueDate && !task.done) {
+                    var due = new Date(task.dueDate);
+                    var reminderMin = task.reminder || defaultReminder || 60;
+                    var remindAt = due.getTime() - (reminderMin * 60 * 1000);
+                    if (due < now) {
+                        isOverdue = true;
+                        li.classList.add('overdue');
+                    } else if (now.getTime() >= remindAt) {
+                        isImpending = true;
+                        li.classList.add('impending');
+                    }
+                }
+
+                li.addEventListener('dragstart', function(e) { handleDragStart(e, index); });
+                li.addEventListener('dragover', function(e) { handleDragOver(e, index); });
+                li.addEventListener('drop', function(e) { handleDrop(e, index); });
+                li.addEventListener('dragend', handleDragEnd);
+
+                // Drag handle
+                var handle = document.createElement('span');
+                handle.className = 'drag-handle';
+                handle.textContent = '⠿';
 
                 var checkbox = document.createElement('input');
                 checkbox.type = 'checkbox';
                 checkbox.checked = task.done;
-                checkbox.addEventListener('change', function() {
-                    toggleTask(index);
-                });
+                checkbox.addEventListener('change', function() { toggleTask(index); });
+
+                // Text + due date container
+                var textWrap = document.createElement('div');
+                textWrap.style.cssText = 'flex:1;display:flex;flex-direction:column;';
 
                 var text = document.createElement('span');
                 text.className = 'task-text' + (task.done ? ' done' : '');
                 text.style.cursor = 'pointer';
-                text.addEventListener('click', function() {
-                    toggleTask(index);
-                });
+                text.addEventListener('click', function() { toggleTask(index); });
+
                 if (task.done) {
                     var inner = document.createElement('span');
                     inner.className = 'strikethrough';
@@ -1060,32 +1017,104 @@
                 } else {
                     text.textContent = task.name;
                 }
+                textWrap.appendChild(text);
+
+                // Due date label
+                if (task.dueDate) {
+                    var dueLabel = document.createElement('div');
+                    dueLabel.className = 'task-due' + (isOverdue ? ' overdue-text' : '');
+                    var dueDate = new Date(task.dueDate);
+                    dueLabel.textContent = (isOverdue ? '⚠ OVERDUE: ' : '📅 ') + dueDate.toLocaleString('en-US', {
+                        month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit'
+                    });
+                    textWrap.appendChild(dueLabel);
+                }
+
+                // Action buttons
+                var actions = document.createElement('div');
+                actions.className = 'task-actions';
+
+                var dueBtn = document.createElement('button');
+                dueBtn.className = 'due-btn';
+                dueBtn.textContent = '📅';
+                dueBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    openDueDateModal(index);
+                });
 
                 var deleteBtn = document.createElement('button');
                 deleteBtn.className = 'delete-btn';
                 deleteBtn.textContent = '✕';
-                deleteBtn.addEventListener('click', function() {
-                    deleteTask(index);
-                });
+                deleteBtn.addEventListener('click', function() { deleteTask(index); });
 
+                actions.appendChild(dueBtn);
+                actions.appendChild(deleteBtn);
+
+                li.appendChild(handle);
                 li.appendChild(checkbox);
-                li.appendChild(text);
-                li.appendChild(deleteBtn);
+                li.appendChild(textWrap);
+                li.appendChild(actions);
                 taskList.appendChild(li);
             });
 
             updateCounter();
         }
 
-        // ===== SAVE TASKS TO FIREBASE =====
-        function saveTasksToFirebase() {
-            if (!currentListCode) return;
-            db.collection('lists').doc(currentListCode).update({
-                tasks: currentTasks
-            });
+        // ===== DUE DATE MODAL =====
+        function openDueDateModal(index) {
+            dueDateTaskIndex = index;
+            var task = currentTasks[index];
+            var input = document.getElementById('dueDateInput');
+            var select = document.getElementById('dueReminderSelect');
+
+            if (task.dueDate) {
+                // Format for datetime-local input
+                var d = new Date(task.dueDate);
+                var offset = d.getTimezoneOffset();
+                var local = new Date(d.getTime() - offset * 60000);
+                input.value = local.toISOString().slice(0, 16);
+            } else {
+                input.value = '';
+            }
+
+            select.value = String(task.reminder || defaultReminder);
+            document.getElementById('dueDateModal').classList.add('visible');
         }
 
-        // ===== ADD TASK =====
+        document.getElementById('dueDateConfirm').addEventListener('click', function() {
+            if (dueDateTaskIndex === null) return;
+            var input = document.getElementById('dueDateInput');
+            var select = document.getElementById('dueReminderSelect');
+
+            if (input.value) {
+                currentTasks[dueDateTaskIndex].dueDate = new Date(input.value).toISOString();
+                currentTasks[dueDateTaskIndex].reminder = parseInt(select.value);
+            }
+            saveTasksToFirebase();
+            document.getElementById('dueDateModal').classList.remove('visible');
+            dueDateTaskIndex = null;
+        });
+
+        document.getElementById('dueDateClear').addEventListener('click', function() {
+            if (dueDateTaskIndex === null) return;
+            delete currentTasks[dueDateTaskIndex].dueDate;
+            delete currentTasks[dueDateTaskIndex].reminder;
+            saveTasksToFirebase();
+            document.getElementById('dueDateModal').classList.remove('visible');
+            dueDateTaskIndex = null;
+        });
+
+        document.getElementById('dueDateCancel').addEventListener('click', function() {
+            document.getElementById('dueDateModal').classList.remove('visible');
+            dueDateTaskIndex = null;
+        });
+
+        // ===== TASK OPERATIONS =====
+        function saveTasksToFirebase() {
+            if (!currentListCode) return;
+            db.collection('lists').doc(currentListCode).update({ tasks: currentTasks });
+        }
+
         function addTask(name) {
             if (name.trim() === '') return;
             currentTasks.push({ name: name.trim(), done: false });
@@ -1093,101 +1122,67 @@
             taskInput.value = '';
         }
 
-        // ===== DELETE TASK =====
         function deleteTask(index) {
             currentTasks.splice(index, 1);
             saveTasksToFirebase();
         }
 
-        // ===== TOGGLE TASK =====
         function toggleTask(index) {
-            var wasDone = currentTasks[index].done;
             currentTasks[index].done = !currentTasks[index].done;
             saveTasksToFirebase();
-
-            if (currentTasks[index].done) {
-                showRemark('congrats');
-                triggerCelebration();
-            } else {
-                showRemark('encourage');
-            }
+            if (currentTasks[index].done) { showRemark('congrats'); triggerCelebration(); }
+            else { showRemark('encourage'); }
         }
 
-        // ===== UPDATE COUNTER =====
         function updateCounter() {
             var total = currentTasks.length;
             var done = currentTasks.filter(function(t) { return t.done; }).length;
             taskCounter.textContent = done + ' / ' + total + ' tasks finished';
         }
 
-        // ===== SHOW REMARK =====
+        // ===== REMARKS =====
         function showRemark(type) {
-            if (remarkTimeout) {
-                clearTimeout(remarkTimeout);
-            }
-
+            if (remarkTimeout) clearTimeout(remarkTimeout);
             if (type === 'congrats') {
-                var msg = congratsRemarks[Math.floor(Math.random() * congratsRemarks.length)];
-                remarkImg.src = narutoImg;
-                remarkImg.alt = 'Naruto';
-                remarkText.textContent = msg;
+                remarkImg.src = narutoImg; remarkImg.alt = 'Naruto';
+                remarkText.textContent = congratsRemarks[Math.floor(Math.random() * congratsRemarks.length)];
             } else {
-                var msg = encourageRemarks[Math.floor(Math.random() * encourageRemarks.length)];
-                remarkImg.src = itachiImg;
-                remarkImg.alt = 'Itachi';
-                remarkText.textContent = msg;
+                remarkImg.src = itachiImg; remarkImg.alt = 'Itachi';
+                remarkText.textContent = encourageRemarks[Math.floor(Math.random() * encourageRemarks.length)];
             }
-
             remarkPopup.classList.add('visible');
-
-            remarkTimeout = setTimeout(function() {
-                remarkPopup.classList.remove('visible');
-            }, 5000);
+            remarkTimeout = setTimeout(function() { remarkPopup.classList.remove('visible'); }, 5000);
         }
 
-        // ===== CELEBRATION (confetti + shake) =====
+        // ===== CELEBRATION =====
         function triggerCelebration() {
             var photo = document.getElementById('profilePhoto');
             var wrapper = document.getElementById('profileWrapper');
-
             photo.classList.remove('shake');
             setTimeout(function() { photo.classList.add('shake'); }, 10);
-
             if (confettiTimeout) clearTimeout(confettiTimeout);
 
-            var colors = ['#1b2a4a', '#1a2744', '#2c3e6b', '#c0392b', '#e74c3c', '#d44035'];
+            var colors = ['#7b2d8e', '#9b59b6', '#5b2c6f', '#27ae60', '#2ecc71', '#1e8449'];
             for (var i = 0; i < 30; i++) {
                 var piece = document.createElement('div');
                 piece.className = 'confetti-piece';
                 piece.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-
                 var size = 6 + Math.random() * 6;
                 piece.style.width = size + 'px';
                 piece.style.height = (Math.random() > 0.5 ? size : size * 0.5) + 'px';
                 piece.style.borderRadius = (Math.random() > 0.5 ? '2px' : '0');
-                piece.style.left = '50%';
-                piece.style.top = '50%';
-
+                piece.style.left = '50%'; piece.style.top = '50%';
                 var angle = Math.random() * Math.PI * 2;
-                var distance = 80 + Math.random() * 120;
-                var xEnd = Math.cos(angle) * distance;
-                var yEnd = Math.sin(angle) * distance;
-                var rotation = (Math.random() - 0.5) * 720;
-
-                piece.style.setProperty('--x', xEnd + 'px');
-                piece.style.setProperty('--y', yEnd + 'px');
-                piece.style.setProperty('--r', rotation + 'deg');
-
-                var duration = 0.8 + Math.random() * 0.6;
-                piece.style.animation = 'confettiFall ' + duration + 's ease-out forwards';
+                var dist = 80 + Math.random() * 120;
+                piece.style.setProperty('--x', Math.cos(angle) * dist + 'px');
+                piece.style.setProperty('--y', Math.sin(angle) * dist + 'px');
+                piece.style.setProperty('--r', (Math.random() - 0.5) * 720 + 'deg');
+                piece.style.animation = 'confettiFall ' + (0.8 + Math.random() * 0.6) + 's ease-out forwards';
                 piece.style.animationDelay = (Math.random() * 0.2) + 's';
-
                 wrapper.appendChild(piece);
             }
-
             confettiTimeout = setTimeout(function() {
-                var pieces = wrapper.querySelectorAll('.confetti-piece');
-                pieces.forEach(function(p) { p.remove(); });
+                wrapper.querySelectorAll('.confetti-piece').forEach(function(p) { p.remove(); });
                 photo.classList.remove('shake');
             }, 5000);
         }
@@ -1195,139 +1190,122 @@
         // ===== DATE & TIME =====
         function updateDateTime() {
             var now = new Date();
-            var hours = now.getHours();
-            var minutes = String(now.getMinutes()).padStart(2, '0');
-            var ampm = hours >= 12 ? 'PM' : 'AM';
-            hours = hours % 12;
-            if (hours === 0) hours = 12;
-            document.getElementById('timeDisplay').textContent = hours + ':' + minutes + ' ' + ampm;
-
-            var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-            document.getElementById('dateDisplay').textContent = now.toLocaleDateString('en-US', options);
+            var h = now.getHours(), m = String(now.getMinutes()).padStart(2, '0');
+            var ampm = h >= 12 ? 'PM' : 'AM';
+            h = h % 12; if (h === 0) h = 12;
+            document.getElementById('timeDisplay').textContent = h + ':' + m + ' ' + ampm;
+            document.getElementById('dateDisplay').textContent = now.toLocaleDateString('en-US', {
+                weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+            });
         }
-
         updateDateTime();
         setInterval(updateDateTime, 1000);
 
         // ===== EVENT LISTENERS =====
+        var deleteTargetCode = null;
 
-        // New List button
-        newListBtn.addEventListener('click', function() {
-            if (newListBtn.disabled) return;
-            newListModal.classList.add('visible');
-            newListTitle.value = '';
-            newListError.style.display = 'none';
-            newListTitle.focus();
+        document.getElementById('newListBtn').addEventListener('click', function() {
+            if (this.disabled) return;
+            document.getElementById('newListModal').classList.add('visible');
+            document.getElementById('newListTitle').value = '';
+            document.getElementById('newListTitle').focus();
+        });
+        document.getElementById('newListCancel').addEventListener('click', function() {
+            document.getElementById('newListModal').classList.remove('visible');
+        });
+        document.getElementById('newListConfirm').addEventListener('click', function() {
+            var t = document.getElementById('newListTitle').value.trim();
+            if (!t) { document.getElementById('newListError').textContent = 'Please enter a title!'; document.getElementById('newListError').style.display = 'block'; return; }
+            document.getElementById('newListModal').classList.remove('visible');
+            createNewList(t);
+        });
+        document.getElementById('newListTitle').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') document.getElementById('newListConfirm').click();
         });
 
-        newListCancel.addEventListener('click', function() {
-            newListModal.classList.remove('visible');
+        document.getElementById('joinListBtn').addEventListener('click', function() {
+            document.getElementById('joinListModal').classList.add('visible');
+            document.getElementById('joinListCode').value = '';
+            document.getElementById('joinListCode').focus();
+        });
+        document.getElementById('joinListCancel').addEventListener('click', function() {
+            document.getElementById('joinListModal').classList.remove('visible');
+        });
+        document.getElementById('joinListConfirm').addEventListener('click', function() {
+            var c = document.getElementById('joinListCode').value.trim();
+            if (c.length !== 8) { document.getElementById('joinListError').textContent = 'Code must be 8 characters!'; document.getElementById('joinListError').style.display = 'block'; return; }
+            joinList(c);
+        });
+        document.getElementById('joinListCode').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') document.getElementById('joinListConfirm').click();
         });
 
-        newListConfirm.addEventListener('click', function() {
-            var title = newListTitle.value.trim();
-            if (!title) {
-                newListError.textContent = 'Please enter a title!';
-                newListError.style.display = 'block';
-                return;
-            }
-            newListModal.classList.remove('visible');
-            createNewList(title);
-        });
+        document.getElementById('backBtn').addEventListener('click', showMenu);
 
-        newListTitle.addEventListener('keydown', function(e) {
-            if (e.key === 'Enter') newListConfirm.click();
-        });
-
-        // Join List button
-        joinListBtn.addEventListener('click', function() {
-            joinListModal.classList.add('visible');
-            joinListCode.value = '';
-            joinListError.style.display = 'none';
-            joinListCode.focus();
-        });
-
-        joinListCancel.addEventListener('click', function() {
-            joinListModal.classList.remove('visible');
-        });
-
-        joinListConfirm.addEventListener('click', function() {
-            var code = joinListCode.value.trim();
-            if (code.length !== 8) {
-                joinListError.textContent = 'Code must be exactly 8 characters!';
-                joinListError.style.display = 'block';
-                return;
-            }
-            joinList(code);
-        });
-
-        joinListCode.addEventListener('keydown', function(e) {
-            if (e.key === 'Enter') joinListConfirm.click();
-        });
-
-        // Back button
-        backBtn.addEventListener('click', function() {
-            showMenu();
-        });
-
-        // + button toggles the input field
         addBtn.addEventListener('click', function() {
             addTaskArea.classList.toggle('visible');
-            if (addTaskArea.classList.contains('visible')) {
-                taskInput.focus();
-            }
+            if (addTaskArea.classList.contains('visible')) taskInput.focus();
         });
-
-        // Press Enter to add task
         taskInput.addEventListener('keydown', function(e) {
-            if (e.key === 'Enter') {
-                addTask(taskInput.value);
-            }
+            if (e.key === 'Enter') addTask(taskInput.value);
         });
 
-        // Click list title to rename
         listTitleDisplay.addEventListener('click', function() {
-            renameListTitleInput.value = listTitleDisplay.textContent;
-            renameListModal.classList.add('visible');
-            renameListTitleInput.focus();
+            document.getElementById('renameListTitle').value = listTitleDisplay.textContent;
+            document.getElementById('renameListModal').classList.add('visible');
+            document.getElementById('renameListTitle').focus();
+        });
+        document.getElementById('renameListCancel').addEventListener('click', function() {
+            document.getElementById('renameListModal').classList.remove('visible');
+        });
+        document.getElementById('renameListConfirm').addEventListener('click', function() {
+            var t = document.getElementById('renameListTitle').value.trim();
+            if (!t) return;
+            db.collection('lists').doc(currentListCode).update({ title: t });
+            document.getElementById('renameListModal').classList.remove('visible');
+        });
+        document.getElementById('renameListTitle').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') document.getElementById('renameListConfirm').click();
         });
 
-        renameListCancel.addEventListener('click', function() {
-            renameListModal.classList.remove('visible');
-        });
-
-        renameListConfirm.addEventListener('click', function() {
-            var newTitle = renameListTitleInput.value.trim();
-            if (!newTitle) return;
-            db.collection('lists').doc(currentListCode).update({ title: newTitle });
-            renameListModal.classList.remove('visible');
-        });
-
-        renameListTitleInput.addEventListener('keydown', function(e) {
-            if (e.key === 'Enter') renameListConfirm.click();
-        });
-
-        // Click code to copy
-        listCodeDisplay.addEventListener('click', function() {
+        document.getElementById('listCodeDisplay').addEventListener('click', function() {
             navigator.clipboard.writeText(currentListCode).then(function() {
                 copiedMsg.style.display = 'inline';
-                setTimeout(function() {
-                    copiedMsg.style.display = 'none';
-                }, 2000);
+                setTimeout(function() { copiedMsg.style.display = 'none'; }, 2000);
+            });
+        });
+
+        document.getElementById('deleteListCancel').addEventListener('click', function() {
+            document.getElementById('deleteListModal').classList.remove('visible');
+            deleteTargetCode = null;
+        });
+        document.getElementById('deleteFromDevice').addEventListener('click', function() {
+            if (!deleteTargetCode) return;
+            var lists = getSavedLists().filter(function(l) { return l.code !== deleteTargetCode; });
+            saveSavedLists(lists);
+            document.getElementById('deleteListModal').classList.remove('visible');
+            deleteTargetCode = null;
+            renderMenu();
+        });
+        document.getElementById('deleteForEveryone').addEventListener('click', function() {
+            if (!deleteTargetCode) return;
+            db.collection('lists').doc(deleteTargetCode).delete().then(function() {
+                var lists = getSavedLists().filter(function(l) { return l.code !== deleteTargetCode; });
+                saveSavedLists(lists);
+                document.getElementById('deleteListModal').classList.remove('visible');
+                deleteTargetCode = null;
+                renderMenu();
             });
         });
 
         // Close modals by clicking overlay
-        document.querySelectorAll('.modal-overlay').forEach(function(overlay) {
-            overlay.addEventListener('click', function(e) {
-                if (e.target === overlay) {
-                    overlay.classList.remove('visible');
-                }
-            });
+        document.querySelectorAll('.modal-overlay').forEach(function(o) {
+            o.addEventListener('click', function(e) { if (e.target === o) o.classList.remove('visible'); });
         });
 
         // ===== INITIALIZE =====
-        renderMenu();
+        var lastList = localStorage.getItem('lastOpenList');
+        if (lastList) { openList(lastList); } else { renderMenu(); }
     </script>
 </body>
 </html>
