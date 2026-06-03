@@ -674,18 +674,25 @@
         });
 
         document.getElementById('testNotifBtn').addEventListener('click', function() {
+            console.log('Button clicked');
+            console.log('Notification support:', 'Notification' in window);
+            console.log('Permission:', Notification.permission);
+
             if ('Notification' in window) {
                 if (Notification.permission === 'granted') {
-                    new Notification('Test notification!', { body: 'If you see this, notifications work!' });
+                    console.log('Creating notification...');
+                    var n = new Notification('Test notification!', { body: 'If you see this, notifications work!' });
+                    console.log('Notification created:', n);
+                    n.onerror = function(e) { console.log('Notification error:', e); };
+                    n.onshow = function() { console.log('Notification shown!'); };
+                    alert('Notification sent! Permission: granted. Check your taskbar/notification area.');
                 } else if (Notification.permission === 'denied') {
-                    alert('Notifications are blocked. Check your browser settings.');
+                    alert('Notifications are BLOCKED. Go to Chrome settings > Site settings > Notifications and allow this site.');
                 } else {
+                    console.log('Requesting permission...');
                     Notification.requestPermission().then(function(p) {
-                        if (p === 'granted') {
-                            new Notification('Test notification!', { body: 'If you see this, notifications work!' });
-                        } else {
-                            alert('You denied notification permission.');
-                        }
+                        console.log('Permission result:', p);
+                        alert('Permission result: ' + p + '. Click Test again.');
                     });
                 }
             } else {
